@@ -175,7 +175,9 @@ void MainPage::receive_muse_artifact_packet(const MuseArtifactPacket & packet, c
     model_.set_values(packet);
 	//std::cout << "TEST: " << packet.blink << std::endl;
 	//OutputDebugString(packet.blink);
-	sendOsc("Blink", packet.blink);
+	if (packet.blink == 1) {
+		sendOsc("Blink", 1);
+	}
     OutputDebugString(L"MainPage::receive_artifact_packet\n");
 }
 
