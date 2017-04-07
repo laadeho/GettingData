@@ -14,7 +14,13 @@ DataModel::DataModel() {
     // and EEG packets have a maximum of 6 pieces of data
     // (1 per channel).  Initialize our data buffer to have
     // adequate room to store the data from every packet type.
-    data_buffer_ = new double[6];
+    data_buffer_	= new double[6];
+	mDataAccel		= new double[6];
+	mDataBattery	= new double[6];
+	mDataEgg		= new double[6];
+	mDataGyro		= new double[6];
+	mDataDrlRef		= new double[6];
+
     clear();
 }
 
@@ -77,8 +83,8 @@ void DataModel::set_values(const std::shared_ptr<MuseDataPacket> &p) {
 
 void DataModel::set_values(const MuseArtifactPacket & p) {
     data_buffer_[0] = p.headband_on ? 1.0 : 0.0;
-    data_buffer_[1] = p.blink ? 1.0 : 0.0;;
-    data_buffer_[2] = p.jaw_clench ? 1.0 : 0.0;;
+    data_buffer_[1] = p.blink ? 1.0 : 0.0;
+    data_buffer_[2] = p.jaw_clench ? 1.0 : 0.0;
     data_buffer_[3] = 0.0;
     data_buffer_[4] = 0.0;
     data_buffer_[5] = 0.0;
@@ -112,47 +118,34 @@ void DataModel::set_version(const std::string &version) {
 }
 
 void DataModel::set_accel_data(const std::shared_ptr<MuseDataPacket> &p) {
-    data_buffer_[0] = p->get_accelerometer_value(Accelerometer::X);
-    data_buffer_[1] = p->get_accelerometer_value(Accelerometer::Y);
-    data_buffer_[2] = p->get_accelerometer_value(Accelerometer::Z);
-    data_buffer_[3] = 0.0;
-    data_buffer_[4] = 0.0;
-    data_buffer_[5] = 0.0;
+    mDataAccel[0] = p->get_accelerometer_value(Accelerometer::X);
+	mDataAccel[1] = p->get_accelerometer_value(Accelerometer::Y);
+	mDataAccel[2] = p->get_accelerometer_value(Accelerometer::Z);
 }
 
 void DataModel::set_battery_data(const std::shared_ptr<MuseDataPacket> &p) {
-    data_buffer_[0] = p->get_battery_value(Battery::CHARGE_PERCENTAGE_REMAINING);
-    data_buffer_[1] = p->get_battery_value(Battery::MILLIVOLTS);
-    data_buffer_[2] = p->get_battery_value(Battery::TEMPERATURE_CELSIUS);
-    data_buffer_[3] = 0.0;
-    data_buffer_[4] = 0.0;
-    data_buffer_[5] = 0.0;
+    mDataBattery[0] = p->get_battery_value(Battery::CHARGE_PERCENTAGE_REMAINING);
+	mDataBattery[1] = p->get_battery_value(Battery::MILLIVOLTS);
+	mDataBattery[2] = p->get_battery_value(Battery::TEMPERATURE_CELSIUS);
 }
 
 void DataModel::set_drl_ref_data(const std::shared_ptr<MuseDataPacket> &p) {
-    data_buffer_[0] = p->get_drl_ref_value(DrlRef::DRL);
-    data_buffer_[1] = p->get_drl_ref_value(DrlRef::REF);
-    data_buffer_[2] = 0.0;
-    data_buffer_[3] = 0.0;
-    data_buffer_[4] = 0.0;
-    data_buffer_[5] = 0.0;
+    mDataDrlRef[0] = p->get_drl_ref_value(DrlRef::DRL);
+	mDataDrlRef[1] = p->get_drl_ref_value(DrlRef::REF);
 }
 
 void DataModel::set_eeg_data(const std::shared_ptr<MuseDataPacket> &p) {
-    data_buffer_[0] = p->get_eeg_channel_value(Eeg::EEG1);
-    data_buffer_[1] = p->get_eeg_channel_value(Eeg::EEG2);
-    data_buffer_[2] = p->get_eeg_channel_value(Eeg::EEG3);
-    data_buffer_[3] = p->get_eeg_channel_value(Eeg::EEG4);
-    data_buffer_[4] = p->get_eeg_channel_value(Eeg::AUX_LEFT);
-    data_buffer_[5] = p->get_eeg_channel_value(Eeg::AUX_RIGHT);
+    mDataEgg[0] = p->get_eeg_channel_value(Eeg::EEG1);
+	mDataEgg[1] = p->get_eeg_channel_value(Eeg::EEG2);
+	mDataEgg[2] = p->get_eeg_channel_value(Eeg::EEG3);
+	mDataEgg[3] = p->get_eeg_channel_value(Eeg::EEG4);
+	mDataEgg[4] = p->get_eeg_channel_value(Eeg::AUX_LEFT);
+	mDataEgg[5] = p->get_eeg_channel_value(Eeg::AUX_RIGHT);
 }
 
 void DataModel::set_gyro_data(const std::shared_ptr<MuseDataPacket> &p) {
-    data_buffer_[0] = p->get_gyro_value(Gyro::X);
-    data_buffer_[1] = p->get_gyro_value(Gyro::Y);
-    data_buffer_[2] = p->get_gyro_value(Gyro::Z);
-    data_buffer_[3] = 0.0;
-    data_buffer_[4] = 0.0;
-    data_buffer_[5] = 0.0;
+    mDataGyro[0] = p->get_gyro_value(Gyro::X);
+	mDataGyro[1] = p->get_gyro_value(Gyro::Y);
+	mDataGyro[2] = p->get_gyro_value(Gyro::Z);
 }
 

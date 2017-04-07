@@ -65,6 +65,14 @@ private:
     /// the data packet to a structure the UI expects.
     double *data_buffer_;
 
+	//Buffers para los diferentes tipos de datos
+	double * mDataAccel,
+		*mDataBattery,
+		*mDataEgg,
+		*mDataGyro,
+		*mDataDrlRef;
+
+
     /// The String that represents the latest received connection state
     /// information.
     std::string connection_state_string_;
@@ -74,5 +82,11 @@ private:
 
     /// The dirty state of the model.
     bool dirty_;
+
+	bool mDirtyAccel,
+		mDirtyBattery,
+		mDirtyEgg,
+		mDirtyGyro,
+		mDirtyDrlRef;
 
 };
