@@ -24,9 +24,30 @@ public:
     /// since the last time the UI was updated.
     bool is_dirty() const;
 
+	bool isDirtyAccel() const { return mDirtyAccel; };
+	bool isDirtyBattery() const { return mDirtyBattery; };
+	bool isDirtyEgg() const { return mDirtyEgg; };
+	bool isDirtyDrlRef() const { return mDirtyDrlRef; };
+	bool isDirtyGyro() const { return mDirtyGyro; };
+	bool isDirtyEggAlpha() const { return mDirtyEggAlpha; };
+	bool isDirtyEggBeta() const { return mDirtyEggBeta; };
+	bool isDirtyEggDelta() const { return mDirtyEggDelta; };
+	bool isDirtyEggTheta() const { return mDirtyEggTheta; };
+	bool isDirtyEggGamma() const { return mDirtyEggGamma; };
+
     /// Called by the UI update function to indicate that the UI has been
     /// updated with all of the data contained in the model.
     void clear_dirty_flag();
+
+	void clearDirtyAccel() { mDirtyAccel = false; };
+	void clearDirtyBattery() { mDirtyBattery = false; };
+	void clearDirtyDrlRef() { mDirtyDrlRef = false; };
+	void clearDirtyGyro() { mDirtyGyro = false; };
+	void clearDirtyEggAplha() { mDirtyEggAlpha = false; };
+	void clearDirtyEggBeta() { mDirtyEggBeta = false; };
+	void clearDirtyEggDelta() { mDirtyEggDelta = false; };
+	void clearDirtyEggTheta() { mDirtyEggTheta = false; };
+	void clearDirtyEggGamma() { mDirtyEggGamma = false; };
 
     /// Erases all data stored in the model.  More heavyweight than clear_dirty_flag
     void clear();
@@ -35,6 +56,16 @@ public:
     /// provided double array.  The double array should be large enough to
     /// store 6 values.
     void get_buffer(double *buffer) const;
+	//Recibir los buffers que varios tipos para luego copiarlos
+	void getBufferAccel(double *buffer) const;
+	void getBufferBattery(double *buffer) const;
+	void getBufferDrlRef(double *buffer) const;
+	void getBufferGyro(double *buffer) const;
+	void getBufferEggAplha(double *buffer) const;
+	void getBufferEggBeta(double *buffer) const;
+	void getBufferEggDelta(double *buffer) const;
+	void getBufferEggTheta(double *buffer) const;
+	void getBufferEggGamma(double *buffer) const;
 
     /// Returns the current connection state of the Muse headband.
     const std::string &get_connection_state() const;
@@ -60,6 +91,7 @@ private:
     void set_eeg_data(const std::shared_ptr<interaxon::bridge::MuseDataPacket> &p);
     void set_gyro_data(const std::shared_ptr<interaxon::bridge::MuseDataPacket> &p);
 
+	void setEggData(const std::shared_ptr<interaxon::bridge::MuseDataPacket> &p, double * buffer, bool *dirtyFlag);
     /// Since we are only interested in one data packet type at a time, we
     /// reuse a single double array to store the data and map the data from
     /// the data packet to a structure the UI expects.
@@ -70,7 +102,12 @@ private:
 		*mDataBattery,
 		*mDataEgg,
 		*mDataGyro,
-		*mDataDrlRef;
+		*mDataDrlRef,
+		*mDataEggAlpha,
+		*mDataEggBeta,
+		*mDataEggDelta,
+		*mDataEggTheta,
+		*mDataEggGamma;
 
 
     /// The String that represents the latest received connection state
@@ -87,6 +124,11 @@ private:
 		mDirtyBattery,
 		mDirtyEgg,
 		mDirtyGyro,
-		mDirtyDrlRef;
+		mDirtyDrlRef,
+		mDirtyEggAlpha,
+		mDirtyEggBeta,
+		mDirtyEggDelta,
+		mDirtyEggTheta,
+		mDirtyEggGamma;
 
 };

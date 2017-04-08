@@ -3,6 +3,14 @@
 // Declaration of the MainPage class.
 //
 
+
+/*****************************
+	Modificaciones por Xumerio
+	- Se modifica la clase DataModel para guardar 6 buffers para cada tipo
+	- Se modifica la GUI principal, no habrá combo box y se agrean checkboxes
+
+*******************************/
+
 #pragma once
 
 #include "MainPage.g.h"
@@ -33,7 +41,21 @@ namespace GettingData
 
     private:
 
+		//Parte OSC
+		struct direccion {
+			std::string ip{"127.0.0.1"};
+			int			port{7000};
+		} ;
+		std::vector<direccion> mDirecciones;
+
 		void sendOsc(std::string address, float value);
+		void sendOscFloat(std::string tag, float value);
+		void sendOscInt(std::string address, std::string tag, int value);
+		void sendOscFloatVector(std::string address, std::string tag, const std::vector<double> values);
+
+		void sendMeanBuffer( double * buffer, std::string tag);
+
+
         //////////////////////////////////////////////////////
         /// Initialization functions
 
@@ -223,6 +245,9 @@ namespace GettingData
         /// A map for getting the MuseDataPacketType from the name in the
         /// data type combobox.
         Platform::Collections::Map<Platform::String^, int> name_to_type_map_;
+
+		Platform::Collections::Map<Platform::String^, int> name_to_type_map_;
+
 
         /// Toogle for pause/resume data transmission.
         bool enable_data_;
