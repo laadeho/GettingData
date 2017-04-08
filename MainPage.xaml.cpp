@@ -112,6 +112,69 @@ void MainPage::sendOsc(std::string address, float value)
 
 	transmitSocket.Send( p.Data(), p.Size() );
 }
+void MainPage::sendOscFloat(std::string tag, float value)
+{
+	for (auto &dire : mDirecciones) {
+		UdpTransmitSocket transmitSocket(IpEndpointName(dire.ip.c_str(), dire.port));
+
+		char buffer[OUTPUT_BUFFER_SIZE];
+		osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+		p << osc::BeginBundleImmediate
+			<< osc::BeginMessage( tag.c_str() )
+			<< value << osc::EndMessage
+			<< osc::EndBundle;
+
+		transmitSocket.Send(p.Data(), p.Size());
+	}
+}
+void MainPage::sendOscInt(std::string address, std::string tag, int value)
+{
+	for (auto &dire : mDirecciones) {
+		UdpTransmitSocket transmitSocket(IpEndpointName(dire.ip.c_str(), dire.port));
+
+		char buffer[OUTPUT_BUFFER_SIZE];
+		osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+		p << osc::BeginBundleImmediate
+			<< osc::BeginMessage(tag.c_str())
+			<< value << osc::EndMessage
+			<< osc::EndBundle;
+
+		transmitSocket.Send(p.Data(), p.Size());
+	}
+}
+void MainPage::sendOscFloatVector(std::string address, std::string tag, const std::vector<double> values)
+{
+	for (auto &dire : mDirecciones) {
+		UdpTransmitSocket transmitSocket(IpEndpointName(dire.ip.c_str(), dire.port));
+
+		char buffer[OUTPUT_BUFFER_SIZE];
+		osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+		p << osc::BeginBundleImmediate
+			<< osc::BeginMessage(tag.c_str());
+			for (auto value : values) {
+				p << value;
+			}
+			
+		p << osc::EndBundle;
+
+		transmitSocket.Send(p.Data(), p.Size());
+	}
+}
+
+//Para mandar el promedio de un buffer
+void MainPage::sendMeanBuffer(double *buffer , std::string tag)
+{
+	double mean = 0;
+	for (int i = 0; i < 6; i++) {
+		mean += buffer[i];
+	}
+	mean /= 6;
+
+	sendOscFloat(tag, mean);
+}
 //////////////////////////////////
 
 
@@ -175,9 +238,7 @@ void MainPage::receive_muse_artifact_packet(const MuseArtifactPacket & packet, c
     model_.set_values(packet);
 	//std::cout << "TEST: " << packet.blink << std::endl;
 	//OutputDebugString(packet.blink);
-	if (packet.blink == 1) {
-		sendOsc("Blink", 1);
-	}
+	sendOsc("Blink", packet.blink);
     OutputDebugString(L"MainPage::receive_artifact_packet\n");
 }
 
@@ -211,7 +272,7 @@ void MainPage::disconnect_button_clicked(Platform::Object^ sender,
     }
 }
 
-void GettingData::MainPage::pause_resume_clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
+void MainPage::pause_resume_clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     if (my_muse_ != nullptr) {
         enable_data_ = !enable_data_;
@@ -245,7 +306,7 @@ void MainPage::data_type_selection_changed(Platform::Object^ sender,
             break;
         case MuseDataPacketType::ARTIFACTS:
             set_artifacts_ui();
-			sendOsc("Hola",0.01);
+			
             break;
         default:
             // All other packet types derive from EEG data.
@@ -275,7 +336,7 @@ void MainPage::queue_ui_update() {
 
 // Call only from the UI thread.
 void MainPage::update_ui() {
-    if (model_.is_dirty()) {
+    /*if (model_.is_dirty()) {
         double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
         model_.get_buffer(buffer);
 
@@ -289,7 +350,28 @@ void MainPage::update_ui() {
         version->Text = Convert::to_platform_string(model_.get_version());
 
         model_.clear_dirty_flag();
-    }
+    }*/
+
+	//Si se ha recibido cualquier tipo de datos proceder
+	if (model_.is_dirty()) {
+		
+		//Si ha recibido nuevos valores para Alpha relative
+		if (model_.isDirtyEggAlpha()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferEggAplha( buffer );
+
+			sendMeanBuffer(buffer, "/alpha");
+	
+
+			model_.clearDirtyEggAplha();
+		}
+
+
+	}
+
+
+
+
     queue_ui_update();
 }
 

@@ -15,7 +15,9 @@
         <TextBlock x:Name="connection_status_label" HorizontalAlignment="Left" Margin="10,175,0,0" TextWrapping="Wrap" Text="Connection Status:" VerticalAlignment="Top"/>
         <TextBlock x:Name="connection_status" HorizontalAlignment="Left" Margin="266,175,0,0" TextWrapping="Wrap" Text="Unknown" VerticalAlignment="Top"/>
         <ComboBox x:Name="data_type_combobox" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Center"  SelectionChanged="data_type_selection_changed"/>
-        <Grid HorizontalAlignment="Stretch" Height="100" Margin="10,200,10,0" VerticalAlignment="Center">
+        <CheckBox x:Name="send_this" HorizontalAlignment="Center" VerticalContentAlignment="Top" Checked="send_this_Checked" Margin="13,571,1787,477" Content="mandar OSC"/>
+
+        <Grid HorizontalAlignment="Stretch" Height="73" Margin="10,617,10,390" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
