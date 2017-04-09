@@ -37,6 +37,7 @@ using namespace interaxon;
 using namespace concurrency;
 
 
+
 // Refresh rate for the data display on the screen (Hz)
 #define REFRESH_RATE 60
 // Decimal precision for displayed data
@@ -174,6 +175,10 @@ void MainPage::sendMeanBuffer(double *buffer , std::string tag)
 	mean /= 6;
 
 	sendOscFloat(tag, mean);
+}
+// Prueba
+void MainPage::send_this_Checked() {
+
 }
 //////////////////////////////////
 
@@ -477,6 +482,24 @@ Platform::String^ MainPage::formatData(double data) const
     ss << std::fixed << std::setprecision(DATA_PRECISION) << data;
     return Convert::to_platform_string(ss.str());
 }
-
-
+/*
+private void toppingsCheckbox_Click(object sender, RoutedEventArgs e)
+{
+	string selectedToppingsText = string.Empty;
+	CheckBox[] checkboxes = new CheckBox[]{ pepperoniCheckbox, beefCheckbox,
+		mushroomsCheckbox, onionsCheckbox };
+	foreach(CheckBox c in checkboxes)
+	{
+		if (c.IsChecked == true)
+		{
+			if (selectedToppingsText.Length > 1)
+			{
+				selectedToppingsText += ", ";
+			}
+			selectedToppingsText += c.Content;
+		}
+	}
+	toppingsList.Text = selectedToppingsText;
+}
+*/
 

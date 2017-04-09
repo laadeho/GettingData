@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="d263d355-ec14-44bd-9b28-e0a1f6c86729" Publisher="CN=Chris" Version="0.1.0.0" />
+  <Identity Name="d263d355-ec14-44bd-9b28-e0a1f6c86729" Publisher="CN=eho" Version="0.1.0.0" />
   <mp:PhoneIdentity PhoneProductId="d263d355-ec14-44bd-9b28-e0a1f6c86729" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>GettingData</DisplayName>
-    <PublisherDisplayName>Chris</PublisherDisplayName>
+    <DisplayName>abismo//proximo</DisplayName>
+    <PublisherDisplayName>EduardoHObieta_LAAd</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -15,10 +15,13 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="GettingData.App">
-      <uap:VisualElements DisplayName="GettingData" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="GettingData" BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+      <uap:VisualElements DisplayName="abismo // proximo" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Proyecto multimedia en torno a la proximidad y el reconocimiento humano." BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="abismo // proximo" Square71x71Logo="Assets\Square71x71Logo.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape" />
+        </uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>

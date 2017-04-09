@@ -55,6 +55,10 @@ namespace GettingData
 
 		void sendMeanBuffer( double * buffer, std::string tag);
 
+		void send_this_Checked();
+
+		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
+
 
         //////////////////////////////////////////////////////
         /// Initialization functions
@@ -246,7 +250,7 @@ namespace GettingData
         /// data type combobox.
         Platform::Collections::Map<Platform::String^, int> name_to_type_map_;
 
-		Platform::Collections::Map<Platform::String^, int> name_to_type_map_;
+		//Platform::Collections::Map<Platform::String^, int> name_to_type_map_;
 
 
         /// Toogle for pause/resume data transmission.
