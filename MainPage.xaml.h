@@ -56,6 +56,7 @@ namespace GettingData
 		void sendMeanBuffer( double * buffer, std::string tag);
 
 		void send_this_Checked();
+		void enviarAlpha();
 
 		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
 

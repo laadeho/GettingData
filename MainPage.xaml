@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <CheckBox x:Name="enviaAlpha" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Alpha Relative" Grid.Row="0" Grid.Column="0"/>
+            <CheckBox x:Name="enviaAlpha" HorizontalAlignment="Left" Checked="enviarAlpha" Content="Alpha Relative" Grid.Row="0" Grid.Column="0"/>
             <CheckBox x:Name="enviaBeta"  HorizontalAlignment="Left" Checked="send_this_Checked" Content="Betha Relative" Grid.Row="1" Grid.Column="0"/>
             <CheckBox x:Name="enviaDelta" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Delta Relative" Grid.Row="2" Grid.Column="0"/>
             <CheckBox x:Name="enviaTheta" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Theta Relative" Grid.Row="3" Grid.Column="0"/>

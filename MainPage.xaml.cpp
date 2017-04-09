@@ -180,6 +180,9 @@ void MainPage::sendMeanBuffer(double *buffer , std::string tag)
 void MainPage::send_this_Checked() {
 
 }
+void MainPage::enviarAlpha() {
+	sendOsc("alpha", rand());
+}
 //////////////////////////////////
 
 
