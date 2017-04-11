@@ -54,6 +54,12 @@ namespace GettingData
 		void sendOscFloatVector(std::string address, std::string tag, const std::vector<double> values);
 
 		void sendMeanBuffer( double * buffer, std::string tag);
+		double getMean(double * buffer);
+
+		void send_this_Checked();
+		void enviarAlpha();
+
+		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
 
 		void send_this_Checked();
 		void enviarAlpha();
@@ -256,7 +262,9 @@ namespace GettingData
 
         /// Toogle for pause/resume data transmission.
         bool enable_data_;
-    };
+		void Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void addIP_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+};
 
 
     //////////////////////////////////////////////////////

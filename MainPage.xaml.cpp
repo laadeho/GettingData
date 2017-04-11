@@ -1,4 +1,4 @@
-﻿//
+//
 // MainPage.xaml.cpp
 // Implementation of the MainPage class.
 //
@@ -175,6 +175,16 @@ void MainPage::sendMeanBuffer(double *buffer , std::string tag)
 	mean /= 6;
 
 	sendOscFloat(tag, mean);
+}
+
+double MainPage::getMean(double * buffer)
+{
+	double mean = 0;
+	for (int i = 0; i < 6; i++) {
+		mean += buffer[i];
+	}
+	mean /= 6;
+	return mean;
 }
 // Prueba
 void MainPage::send_this_Checked() {
@@ -366,13 +376,111 @@ void MainPage::update_ui() {
 		//Si ha recibido nuevos valores para Alpha relative
 		if (model_.isDirtyEggAlpha()) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-			model_.getBufferEggAplha( buffer );
+			model_.getBufferEggAplha(buffer);
+			double mean = getMean(buffer);
+			alphaPromedio->Text = "" + mean;
 
-			sendMeanBuffer(buffer, "/alpha");
-	
+			if (enviaAlpha->IsChecked) {
 
+				sendOscFloat("/alpha", mean);
+				//sendMeanBuffer(buffer, "/alpha");	
+			}
 			model_.clearDirtyEggAplha();
 		}
+
+		//Si ha recibido nuevos valores para Beta relative
+		if (model_.isDirtyEggBeta()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferEggBeta(buffer);
+			double mean = getMean(buffer);
+			betaPromedio->Text = "" + mean;
+			if (enviaBeta->IsChecked) {
+				sendOscFloat("/beta", mean);
+			}
+			model_.clearDirtyEggBeta();
+		}
+
+		//Si ha recibido nuevos valores para Delta relative
+		if (model_.isDirtyEggDelta()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferEggDelta(buffer);
+			double mean = getMean(buffer);
+			deltaPromedio->Text = "" + mean;
+			if (enviaDelta->IsChecked) {
+				sendOscFloat("/delta", mean);
+			}
+			model_.clearDirtyEggDelta();
+		}
+
+		//Si ha recibido nuevos valores para Theta relative
+		if (model_.isDirtyEggTheta()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferEggTheta(buffer);
+			double mean = getMean(buffer);
+			thetaPromedio->Text = "" + mean;
+			if (enviaTheta->IsChecked) {
+				sendOscFloat("/theta", mean);
+			}
+			model_.clearDirtyEggTheta();
+		}
+
+		//Si ha recibido nuevos valores para Theta relative
+		if (model_.isDirtyEggGamma()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferEggGamma(buffer);
+			double mean = getMean(buffer);
+			gammaPromedio->Text = "" + mean;
+			if (enviaGamma->IsChecked) {
+				sendOscFloat("/gamma", mean);
+			}
+			model_.clearDirtyEggGamma();
+		}
+		
+
+		//Mandar los datos de artifacts
+		if (model_.isDirtyBattery()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferBattery(buffer);
+			battery->Text = "" + buffer[0];
+			if (Battery->IsChecked) {
+				sendOscFloat("/accelerometer", (float)buffer[0]);
+			}
+
+			model_.clearDirtyAccel();
+		}
+
+
+
+		//Mandar los datos del acelerómetro
+		if (model_.isDirtyAccel()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferAccel(buffer);
+			accX->Text = "" + buffer[0];
+			accY->Text = "" + buffer[1];
+			accZ->Text = "" + buffer[2];
+			if (enviaAccelerometer->IsChecked) {
+				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
+				sendOscFloatVector("", "/accelerometer", dats);
+			}
+
+			model_.clearDirtyBattery();
+		}
+
+		//Mandar los datos del gyro
+		if (model_.isDirtyGyro()) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferGyro(buffer);
+			gyroX->Text = "" + buffer[0];
+			gyroY->Text = "" + buffer[1];
+			gyroZ->Text = "" + buffer[2];
+			if (enviaGyro->IsChecked) {
+				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
+				sendOscFloatVector("", "/gyro", dats);
+			}
+
+			model_.clearDirtyGyro();
+		}
+
 
 
 	}
@@ -506,3 +614,38 @@ private void toppingsCheckbox_Click(object sender, RoutedEventArgs e)
 }
 */
 
+void GettingData::MainPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	if (listaDirecciones->Items->Size < 1) {
+		return;
+	}
+
+	if (mDirecciones.size() != listaDirecciones->Items->Size) {
+		return;
+	}
+
+	mDirecciones.erase(mDirecciones.begin() + listaDirecciones->SelectedIndex);
+	listaDirecciones->Items->RemoveAt(listaDirecciones->SelectedIndex);
+}
+
+
+
+void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	if (nuevaIp->Text->ToString() == "" ||  nuevoPuerto->Text->ToString() == "")
+		return;
+
+	Platform::String^ compuesta = nuevaIp->Text->ToString() + ":" + nuevoPuerto->Text->ToString();
+
+	listaDirecciones->Items->Append(compuesta);
+
+	Platform::String^ fooRT = nuevaIp->Text->ToString();
+	std::wstring fooW(fooRT->Begin());
+	std::string fooA(fooW.begin(), fooW.end());
+
+	direccion dire;
+	dire.ip = fooA;
+	dire.port = _wtoi(nuevoPuerto->Text->ToString()->Data());
+	mDirecciones.push_back(dire);
+
+}
