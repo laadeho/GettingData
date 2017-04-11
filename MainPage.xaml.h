@@ -61,6 +61,11 @@ namespace GettingData
 
 		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
 
+		void send_this_Checked();
+		void enviarAlpha();
+
+		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
+
 
         //////////////////////////////////////////////////////
         /// Initialization functions

@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="GettingData.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -32,6 +32,12 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+        <Grid HorizontalAlignment="Center" Height="320" Margin="60,150,60,150" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                <RowDefinition/><RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -56,13 +62,13 @@
             <TextBlock x:Name="HeadbandON"      HorizontalAlignment="Left" TextAlignment="Right" Text="Headband ON" Margin="50,0" Grid.Row="7" Grid.Column="0"/>
             <TextBlock x:Name="Blink"           HorizontalAlignment="Left"  TextAlignment="Right" Text="Blink" Margin="50,0" Grid.Row="8" Grid.Column="0"/>
             <TextBlock x:Name="JawClench"       HorizontalAlignment="Left"  TextAlignment="Right" Text="Jaw Clench" Margin="50,0" Grid.Row="9" Grid.Column="0"/>
+
             <TextBlock x:Name="artifactHead"    HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="7" Grid.Column="1" />
             <TextBlock x:Name="artifactBlink"   HorizontalAlignment="Left"  TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="8" Grid.Column="1"/>
             <TextBlock x:Name="artifactJaw"     HorizontalAlignment="Left"  TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="9" Grid.Column="1"/>
 
-
             <CheckBox x:Name="Battery" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Battery %" Grid.Row="11" Grid.Column="0"/>
-            <TextBlock x:Name="battery"     HorizontalAlignment="Left"  TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="11" Grid.Column="1"/>
+            <TextBlock x:Name="battery" HorizontalAlignment="Left"  TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="11" Grid.Column="1"/>
 
             <CheckBox x:Name="enviaAccelerometer" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Accelerometer" Grid.Row="0" Grid.Column="2"/>
             <TextBlock x:Name="accXtxt" HorizontalAlignment="Left" TextAlignment="Right" Text="Acc X" Margin="50,0" Grid.Row="1" Grid.Column="2"/>
@@ -95,6 +101,25 @@
             <TextBlock x:Name="auxLeft" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="13" Grid.Column="3"/>
             <TextBlock x:Name="auxRight" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="14" Grid.Column="3"/>
 
+            <CheckBox x:Name="Battery" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Battery %" Grid.Row="11" Grid.Column="0"/>
+
+            <CheckBox x:Name="enviaAccelerometer" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Accelerometer" Grid.Row="0" Grid.Column="2"/>
+            <TextBlock x:Name="accX" HorizontalAlignment="Left" TextAlignment="Right" Text="Acc X" Margin="50,0" Grid.Row="1" Grid.Column="2"/>
+            <TextBlock x:Name="accY" HorizontalAlignment="Left" TextAlignment="Right" Text="Acc Y" Margin="50,0" Grid.Row="2" Grid.Column="2"/>
+            <TextBlock x:Name="accZ" HorizontalAlignment="Left" TextAlignment="Right" Text="Acc Z" Margin="50,0" Grid.Row="3" Grid.Column="2"/>
+
+            <CheckBox x:Name="enviaGYRO" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Gyro" Grid.Row="4" Grid.Column="2"/>
+            <TextBlock x:Name="gyroX" HorizontalAlignment="Left" TextAlignment="Right" Text="Gyro X" Margin="50,0" Grid.Row="5" Grid.Column="2"/>
+            <TextBlock x:Name="gyroY" HorizontalAlignment="Left" TextAlignment="Right" Text="Gyro Y" Margin="50,0" Grid.Row="6" Grid.Column="2"/>
+            <TextBlock x:Name="gyroZ" HorizontalAlignment="Left" TextAlignment="Right" Text="Gyro Z" Margin="50,0" Grid.Row="7" Grid.Column="2"/>
+            
+            <CheckBox x:Name="isGOOD" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Is Good" Grid.Row="8" Grid.Column="2"/>
+            <TextBlock x:Name="EEG1" HorizontalAlignment="Left" TextAlignment="Right" Text="EEG 1" Margin="50,0" Grid.Row="9" Grid.Column="2"/>
+            <TextBlock x:Name="EEG2" HorizontalAlignment="Left" TextAlignment="Right" Text="EEG 2" Margin="50,0" Grid.Row="10" Grid.Column="2"/>
+            <TextBlock x:Name="EEG3" HorizontalAlignment="Left" TextAlignment="Right" Text="EEG 3" Margin="50,0" Grid.Row="11" Grid.Column="2"/>
+            <TextBlock x:Name="EEG4" HorizontalAlignment="Left" TextAlignment="Right" Text="EEG 4" Margin="50,0" Grid.Row="12" Grid.Column="2"/>
+            <TextBlock x:Name="auxLeft" HorizontalAlignment="Left" TextAlignment="Right" Text="Aux Left" Margin="50,0" Grid.Row="13" Grid.Column="2"/>
+            <TextBlock x:Name="auxRight" HorizontalAlignment="Left" TextAlignment="Right" Text="Aux Right" Margin="50,0" Grid.Row="14" Grid.Column="2"/>
 
         </Grid>
         <ComboBox x:Name="data_type_combobox" HorizontalAlignment="Stretch" Margin="10,0,10,200" VerticalAlignment="Bottom"  SelectionChanged="data_type_selection_changed"/>

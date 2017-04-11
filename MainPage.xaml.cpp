@@ -1,4 +1,4 @@
-﻿//
+//
 // MainPage.xaml.cpp
 // Implementation of the MainPage class.
 //
@@ -176,6 +176,7 @@ void MainPage::sendMeanBuffer(double *buffer , std::string tag)
 
 	sendOscFloat(tag, mean);
 }
+
 double MainPage::getMean(double * buffer)
 {
 	double mean = 0;
@@ -613,11 +614,6 @@ private void toppingsCheckbox_Click(object sender, RoutedEventArgs e)
 }
 */
 
-
-
-
-
-
 void GettingData::MainPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	if (listaDirecciones->Items->Size < 1) {
@@ -639,7 +635,6 @@ void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::X
 	if (nuevaIp->Text->ToString() == "" ||  nuevoPuerto->Text->ToString() == "")
 		return;
 
-
 	Platform::String^ compuesta = nuevaIp->Text->ToString() + ":" + nuevoPuerto->Text->ToString();
 
 	listaDirecciones->Items->Append(compuesta);
@@ -653,5 +648,4 @@ void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::X
 	dire.port = _wtoi(nuevoPuerto->Text->ToString()->Data());
 	mDirecciones.push_back(dire);
 
-	
 }
