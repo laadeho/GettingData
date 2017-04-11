@@ -25,9 +25,7 @@ DataModel::DataModel() {
 	mDataEggDelta	= new double[6];
 	mDataEggTheta	= new double[6];
 	mDataEggGamma	= new double[6];
-
-
-
+	
     clear();
 }
 
@@ -280,7 +278,8 @@ void DataModel::set_gyro_data(const std::shared_ptr<MuseDataPacket> &p) {
 	mDataGyro[5] = 0.0;
 	mDirtyGyro = true;
 }
-
+/*
 void getBufferBattery(double * buffer) const
 {
 }
+*/
