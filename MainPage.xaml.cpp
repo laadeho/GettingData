@@ -1,4 +1,4 @@
-//
+﻿//
 // MainPage.xaml.cpp
 // Implementation of the MainPage class.
 //
@@ -372,6 +372,10 @@ void MainPage::update_ui() {
 	//Si se ha recibido cualquier tipo de datos proceder
 	if (model_.is_dirty()) {
 
+
+		connection_status->Text = Convert::to_platform_string(model_.get_connection_state());
+		version->Text = Convert::to_platform_string(model_.get_version());
+
 		//Si ha recibido nuevos valores para Alpha relative
 		if (model_.isDirtyEggAlpha()) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -636,7 +640,8 @@ void GettingData::MainPage::Button_Click(Platform::Object^ sender, Windows::UI::
 
 void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	if (nuevaIp->Text->ToString() == "" || nuevoPuerto->Text->ToString() == "")
+
+	if (nuevaIp->Text->ToString() == "" ||  nuevoPuerto->Text->ToString() == "")
 		return;
 
 
