@@ -12,6 +12,9 @@ Proyecto desarrollado para comunicar el sensor neuronal muse a otros programas a
 * Enviar datos a dos direcciones IP y dos puertos
 * Pruebas
 
+##### Bugs detectados
+* Al iniciar la aplicación y dar click en connect sin el dispositivo Bluetooth conectado arroja una excepcion, sería bueno evitar ese break.
+
 ##### Colaboradores:
 Desarrollado a partir del SDK libMuse for Windows.
 * Eduardo H Obieta
