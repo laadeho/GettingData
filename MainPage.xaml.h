@@ -60,7 +60,6 @@ namespace GettingData
 
 		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
 
-
 		//////////////////////////////////////////////////////
 		/// Initialization functions
 

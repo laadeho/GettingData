@@ -16,7 +16,7 @@
         <TextBlock x:Name="connection_status" HorizontalAlignment="Left" Margin="266,125,0,0" TextWrapping="Wrap" Text="Unknown" VerticalAlignment="Top"/>
 
         <!-- SECCION IZQUIERDA alpha, beta, gamma, delta, theta, artifacts -->
-        <Grid HorizontalAlignment="Center" Height="320" Margin="29,159,551,0" VerticalAlignment="Top">
+        <Grid HorizontalAlignment="Center" Height="320" Margin="-500,159,0,0" VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -35,10 +35,10 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <CheckBox x:Name="enviaAlpha" HorizontalAlignment="Left" Content="Alpha Relative" Grid.Row="0" Grid.Column="0"/>
             <CheckBox x:Name="enviaBeta"  HorizontalAlignment="Left" Content="Betha Relative" Grid.Row="1" Grid.Column="0"/>
@@ -94,9 +94,7 @@
             <TextBlock x:Name="EEG4" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="12" Grid.Column="3"/>
             <TextBlock x:Name="auxLeft" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="13" Grid.Column="3"/>
             <TextBlock x:Name="auxRight" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="14" Grid.Column="3"/>
-
-
-        </Grid>
+        </Grid> 
         <ComboBox x:Name="data_type_combobox" HorizontalAlignment="Stretch" Margin="10,0,10,200" VerticalAlignment="Bottom"  SelectionChanged="data_type_selection_changed"/>
         <Grid HorizontalAlignment="Stretch" Height="73" Margin="10,817,10,390" VerticalAlignment="Center">
             <Grid.RowDefinitions>
@@ -128,16 +126,49 @@
         <TextBlock x:Name="version_label" HorizontalAlignment="Left" Margin="200,0,0,20" TextWrapping="Wrap" Text="Version:" VerticalAlignment="Bottom"/>
         <TextBlock x:Name="version" HorizontalAlignment="Left" Margin="280,0,0,20" TextWrapping="Wrap" Text="Unknown" VerticalAlignment="Bottom"/>
         <Button x:Name="pause_button" Content="Pause/Resume" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Click="pause_resume_clicked"/>
-        <TextBox x:Name="nuevaIp" HorizontalAlignment="Left" Margin="851,169,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="143"/>
-        <TextBox x:Name="nuevoPuerto" HorizontalAlignment="Left" Margin="1013,169,0,0" TextWrapping="Wrap" Text="7000" VerticalAlignment="Top" Width="81"/>
-        <Button x:Name="addIP" Content="+" HorizontalAlignment="Left" Margin="1118,169,0,0" VerticalAlignment="Top" Click="addIP_Click"/>
-        <TextBlock HorizontalAlignment="Left" Margin="761,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top">
-            <Run Text="Añadir IP"/>
-            <LineBreak/>
-            <Run/>
-        </TextBlock>
-        <ListView x:Name="listaDirecciones" HorizontalAlignment="Left" Height="233" Margin="851,235,0,0" VerticalAlignment="Top" Width="243"/>
-        <Button x:Name="removeIP" Content="-" HorizontalAlignment="Left" Margin="1128,235,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        
+        <Grid HorizontalAlignment="Center" Width="450" Height="320" Margin="500,159,30,0" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid HorizontalAlignment="Right" Width="450" Height="100" Margin="0" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0">
+                    <Run Text="DIRECCION IP"/><LineBreak/><Run/>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1">
+                    <Run Text="PUERTO"/><LineBreak/><Run/>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2">
+                    <Run Text="ACCIONES"/><LineBreak/><Run/>
+                </TextBlock>
 
+                <TextBox x:Name="nuevaIp" HorizontalAlignment="Left" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="143" Grid.Row="1" Grid.Column="0"/>
+                <TextBox x:Name="nuevoPuerto" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="7000" VerticalAlignment="Top" Width="81" Grid.Row="1" Grid.Column="1"/>
+
+                <Button x:Name="addIP" Content="+" HorizontalAlignment="Left" Width="35" Margin="0" VerticalAlignment="Top" Click="addIP_Click" Grid.Row="1" Grid.Column="2"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="1" Grid.Column="2">
+                    <Run Text="Mas IP"/><LineBreak/><Run/>
+                </TextBlock>
+                <Button x:Name="removeIP" Content="-" HorizontalAlignment="Left" Width="35" Margin="0,0 " VerticalAlignment="Top" Click="Button_Click" Grid.Row="2" Grid.Column="2"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="2" Grid.Column="2">
+                    <Run Text="Menos IP"/><LineBreak/><Run/>
+                </TextBlock>
+            </Grid>
+            <ListView x:Name="listaDirecciones" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="300" Grid.Row="1" Grid.Column="0"/>
+        </Grid>
     </Grid>
 </Page>
