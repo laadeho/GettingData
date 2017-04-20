@@ -40,11 +40,11 @@
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <CheckBox x:Name="enviaAlpha" HorizontalAlignment="Left" Checked="enviarAlpha" Content="Alpha Relative" Grid.Row="0" Grid.Column="0"/>
-            <CheckBox x:Name="enviaBeta"  HorizontalAlignment="Left" Checked="send_this_Checked" Content="Betha Relative" Grid.Row="1" Grid.Column="0"/>
-            <CheckBox x:Name="enviaDelta" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Delta Relative" Grid.Row="2" Grid.Column="0"/>
-            <CheckBox x:Name="enviaTheta" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Theta Relative" Grid.Row="3" Grid.Column="0"/>
-            <CheckBox x:Name="enviaGamma" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Gamma Relative" Grid.Row="4" Grid.Column="0"/>
+            <CheckBox x:Name="enviaAlpha" HorizontalAlignment="Left" Content="Alpha Relative" Grid.Row="0" Grid.Column="0"/>
+            <CheckBox x:Name="enviaBeta"  HorizontalAlignment="Left" Content="Betha Relative" Grid.Row="1" Grid.Column="0"/>
+            <CheckBox x:Name="enviaDelta" HorizontalAlignment="Left" Content="Delta Relative" Grid.Row="2" Grid.Column="0"/>
+            <CheckBox x:Name="enviaTheta" HorizontalAlignment="Left" Content="Theta Relative" Grid.Row="3" Grid.Column="0"/>
+            <CheckBox x:Name="enviaGamma" HorizontalAlignment="Left" Content="Gamma Relative" Grid.Row="4" Grid.Column="0"/>
 
             <TextBlock x:Name="alphaPromedio" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Grid.Row="0" Grid.Column="1"/>
             <TextBlock x:Name="betaPromedio"  HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Grid.Row="1" Grid.Column="1"/>
@@ -52,7 +52,7 @@
             <TextBlock x:Name="thetaPromedio" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Grid.Row="3" Grid.Column="1"/>
             <TextBlock x:Name="gammaPromedio" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Grid.Row="4" Grid.Column="1"/>
 
-            <CheckBox x:Name="enviaArtifacts"   HorizontalAlignment="Left" Checked="send_this_Checked" Content="Artifacts" Grid.Row="6" Grid.Column="0"/>
+            <CheckBox x:Name="enviaArtifacts"   HorizontalAlignment="Left" Content="Artifacts" Grid.Row="6" Grid.Column="0"/>
             <TextBlock x:Name="HeadbandON"      HorizontalAlignment="Left" TextAlignment="Right" Text="Headband ON" Margin="50,0" Grid.Row="7" Grid.Column="0"/>
             <TextBlock x:Name="Blink"           HorizontalAlignment="Left"  TextAlignment="Right" Text="Blink" Margin="50,0" Grid.Row="8" Grid.Column="0"/>
             <TextBlock x:Name="JawClench"       HorizontalAlignment="Left"  TextAlignment="Right" Text="Jaw Clench" Margin="50,0" Grid.Row="9" Grid.Column="0"/>
@@ -64,7 +64,7 @@
             <CheckBox x:Name="Battery" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Battery %" Grid.Row="11" Grid.Column="0"/>
             <TextBlock x:Name="battery"     HorizontalAlignment="Left"  TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="11" Grid.Column="1"/>
 
-            <CheckBox x:Name="enviaAccelerometer" HorizontalAlignment="Left" Checked="send_this_Checked" Content="Accelerometer" Grid.Row="0" Grid.Column="2"/>
+            <CheckBox x:Name="enviaAccelerometer" HorizontalAlignment="Left" Content="Accelerometer" Grid.Row="0" Grid.Column="2"/>
             <TextBlock x:Name="accXtxt" HorizontalAlignment="Left" TextAlignment="Right" Text="Acc X" Margin="50,0" Grid.Row="1" Grid.Column="2"/>
             <TextBlock x:Name="accYtxt" HorizontalAlignment="Left" TextAlignment="Right" Text="Acc Y" Margin="50,0" Grid.Row="2" Grid.Column="2"/>
             <TextBlock x:Name="accZtxt" HorizontalAlignment="Left" TextAlignment="Right" Text="Acc Z" Margin="50,0" Grid.Row="3" Grid.Column="2"/>

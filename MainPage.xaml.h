@@ -57,7 +57,6 @@ namespace GettingData
 		double getMean(double * buffer);
 
 		void send_this_Checked();
-		void enviarAlpha();
 
 		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
 

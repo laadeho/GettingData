@@ -145,6 +145,7 @@ void MainPage::sendOscInt(std::string address, std::string tag, int value)
 		transmitSocket.Send(p.Data(), p.Size());
 	}
 }
+
 void MainPage::sendOscFloatVector(std::string address, std::string tag, const std::vector<double> values)
 {
 	for (auto &dire : mDirecciones) {
@@ -189,12 +190,6 @@ double MainPage::getMean(double * buffer)
 void MainPage::send_this_Checked() {
 
 }
-void MainPage::enviarAlpha() {
-	sendOsc("alpha", rand());
-}
-//////////////////////////////////
-
-
 
 void MainPage::add_type(Platform::String^ name, MuseDataPacketType type) {
 	data_type_combobox->Items->Append(name);
@@ -371,8 +366,6 @@ void MainPage::update_ui() {
 
 	//Si se ha recibido cualquier tipo de datos proceder
 	if (model_.is_dirty()) {
-
-
 		connection_status->Text = Convert::to_platform_string(model_.get_connection_state());
 		version->Text = Convert::to_platform_string(model_.get_version());
 
@@ -446,13 +439,11 @@ void MainPage::update_ui() {
 			model_.getBufferBattery(buffer);
 			battery->Text = "" + buffer[0];
 			if (Battery->IsChecked) {
-				sendOscFloat("/accelerometer", (float)buffer[0]);
+				sendOscFloat("/artifacts", (float)buffer[0]);
 			}
 
 			model_.clearDirtyAccel();
 		}
-
-
 
 		//Mandar los datos del acelerómetro
 		if (model_.isDirtyAccel()) {
@@ -483,14 +474,7 @@ void MainPage::update_ui() {
 
 			model_.clearDirtyGyro();
 		}
-
-
-
 	}
-
-
-
-
 	queue_ui_update();
 }
 
