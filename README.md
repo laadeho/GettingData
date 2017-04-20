@@ -9,6 +9,7 @@ Proyecto desarrollado para comunicar el sensor neuronal muse a otros programas a
 
 ##### ToDo list
 * Posibilidad de enviar múltiples datos
+..* De momento solo envía un dato a la vez, *nos falta hacerlo simultáneo* al seleccionar las casillas.
 * Capacidad para conectar dos sensores
 * Enviar datos a dos direcciones IP y dos puertos
 
