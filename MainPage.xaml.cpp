@@ -49,7 +49,7 @@ MainPage::MainPage() :
 	enable_data_(true)
 {
 	InitializeComponent();
-	init_data_type_combobox();
+
 
 	queue_ui_update();
 	Platform::Object^ pvBool = Windows::Foundation::PropertyValue::CreateBoolean(true);
@@ -64,36 +64,6 @@ MainPage::MainPage() :
 	check_bluetooth_enabled();
 }
 
-void MainPage::init_data_type_combobox() {
-	add_type("ACCELEROMETER", MuseDataPacketType::ACCELEROMETER);
-	add_type("GYRO", MuseDataPacketType::GYRO);
-	add_type("EEG", MuseDataPacketType::EEG);
-	add_type("DROPPED_ACCELEROMETER", MuseDataPacketType::DROPPED_ACCELEROMETER);
-	add_type("DROPPED_EEG", MuseDataPacketType::DROPPED_EEG);
-	add_type("QUANTIZATION", MuseDataPacketType::QUANTIZATION);
-	add_type("BATTERY", MuseDataPacketType::BATTERY);
-	add_type("DRL_REF", MuseDataPacketType::DRL_REF);
-	add_type("ALPHA_ABSOLUTE", MuseDataPacketType::ALPHA_ABSOLUTE);
-	add_type("BETA_ABSOLUTE", MuseDataPacketType::BETA_ABSOLUTE);
-	add_type("DELTA_ABSOLUTE", MuseDataPacketType::DELTA_ABSOLUTE);
-	add_type("THETA_ABSOLUTE", MuseDataPacketType::THETA_ABSOLUTE);
-	add_type("GAMMA_ABSOLUTE", MuseDataPacketType::GAMMA_ABSOLUTE);
-	add_type("ALPHA_RELATIVE", MuseDataPacketType::ALPHA_RELATIVE);
-	add_type("BETA_RELATIVE", MuseDataPacketType::BETA_RELATIVE);
-	add_type("DELTA_RELATIVE", MuseDataPacketType::DELTA_RELATIVE);
-	add_type("THETA_RELATIVE", MuseDataPacketType::THETA_RELATIVE);
-	add_type("GAMMA_RELATIVE", MuseDataPacketType::GAMMA_RELATIVE);
-	add_type("ALPHA_SCORE", MuseDataPacketType::ALPHA_SCORE);
-	add_type("BETA_SCORE", MuseDataPacketType::BETA_SCORE);
-	add_type("DELTA_SCORE", MuseDataPacketType::DELTA_SCORE);
-	add_type("THETA_SCORE", MuseDataPacketType::THETA_SCORE);
-	add_type("GAMMA_SCORE", MuseDataPacketType::GAMMA_SCORE);
-	add_type("IS_GOOD", MuseDataPacketType::IS_GOOD);
-	add_type("HSI", MuseDataPacketType::HSI);
-	add_type("HSI_PRECISION", MuseDataPacketType::HSI_PRECISION);
-	add_type("ARTIFACTS", MuseDataPacketType::ARTIFACTS);
-	data_type_combobox->SelectedIndex = 0;
-}
 
 //******************************************
 #define ADDRESS "127.0.0.1"
@@ -198,10 +168,6 @@ void MainPage::send_this_Checked() {
 
 }
 
-void MainPage::add_type(Platform::String^ name, MuseDataPacketType type) {
-	data_type_combobox->Items->Append(name);
-	name_to_type_map_.Insert(name, (int)type);
-}
 
 
 void MainPage::check_bluetooth_enabled() {
@@ -603,30 +569,6 @@ Platform::String^ MainPage::formatData(double data) const
 	ss << std::fixed << std::setprecision(DATA_PRECISION) << data;
 	return Convert::to_platform_string(ss.str());
 }
-/*
-private void toppingsCheckbox_Click(object sender, RoutedEventArgs e)
-{
-string selectedToppingsText = string.Empty;
-CheckBox[] checkboxes = new CheckBox[]{ pepperoniCheckbox, beefCheckbox,
-mushroomsCheckbox, onionsCheckbox };
-foreach(CheckBox c in checkboxes)
-{
-if (c.IsChecked == true)
-{
-if (selectedToppingsText.Length > 1)
-{
-selectedToppingsText += ", ";
-}
-selectedToppingsText += c.Content;
-}
-}
-toppingsList.Text = selectedToppingsText;
-}
-*/
-
-
-
-
 
 
 void GettingData::MainPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
@@ -653,19 +595,26 @@ void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::X
 
 	if (nuevaIp->Text->ToString() == "" ||  nuevoPuerto->Text->ToString() == "")
 		return;
+	Platform::String^ fooRT = nuevaIp->Text->ToString();
+	std::wstring fooW(fooRT->Begin());
+	std::string fooA(fooW.begin(), fooW.end());
 
+	nuevaIp;
+	if ( !validateIpAddress( fooA ) )
+		return;
 
 	Platform::String^ compuesta = nuevaIp->Text->ToString() + ":" + nuevoPuerto->Text->ToString();
 
 	listaDirecciones->Items->Append(compuesta);
 
-	Platform::String^ fooRT = nuevaIp->Text->ToString();
-	std::wstring fooW(fooRT->Begin());
-	std::string fooA(fooW.begin(), fooW.end());
+	
 
 	direccion dire;
 	dire.ip = fooA;
 	dire.port = _wtoi(nuevoPuerto->Text->ToString()->Data());
+
+	
+
 	mDirecciones.push_back(dire);
 
 
@@ -690,4 +639,11 @@ void GettingData::MainPage::Button_Click_1(Platform::Object^ sender, Windows::UI
 	}
 
 
+}
+
+bool GettingData::MainPage::validateIpAddress(const std::string &ipAddress)
+{
+	struct sockaddr_in sa;
+	int result = inet_pton(AF_INET, ipAddress.c_str(), &(sa.sin_addr));
+	return result != 0;
 }

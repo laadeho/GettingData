@@ -17,6 +17,8 @@ Modificaciones por Xumerio
 #include "DataModel.h"
 #include <iostream>
 #include "muse.h"
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
 using namespace interaxon::bridge;
 
@@ -57,6 +59,8 @@ namespace GettingData
 		void sendOscFloat(std::string tag, float value);
 		void sendOscInt(std::string address, std::string tag, int value);
 		void sendOscFloatVector(std::string address, std::string tag, const std::vector<double> values);
+
+		bool validateIpAddress(const std::string &ipAddress);
 
 		void sendMeanBuffer(double * buffer, std::string tag);
 		double getMean(double * buffer);

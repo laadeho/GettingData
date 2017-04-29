@@ -95,7 +95,6 @@
             <TextBlock x:Name="auxLeft" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="13" Grid.Column="3"/>
             <TextBlock x:Name="auxRight" HorizontalAlignment="Left" TextAlignment="Right" Text="0.0" Margin="0" Grid.Row="14" Grid.Column="3"/>
         </Grid> 
-        <ComboBox x:Name="data_type_combobox" HorizontalAlignment="Stretch" Margin="10,0,10,200" VerticalAlignment="Bottom"  SelectionChanged="data_type_selection_changed"/>
         <Grid HorizontalAlignment="Stretch" Height="73" Margin="10,817,10,390" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -165,7 +164,7 @@
                 </TextBlock>
                 <Button x:Name="removeIP" Content="-" HorizontalAlignment="Left" Width="35" Margin="0,0 " VerticalAlignment="Top" Click="Button_Click" Grid.Row="2" Grid.Column="2"/>
                 <TextBlock HorizontalAlignment="Left" Margin="40,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="2" Grid.Column="2">
-                    <Run Text="Menos IP"/><LineBreak/><Run/>
+                    <Run Text="Quitar IP"/><LineBreak/><Run/>
                 </TextBlock>
             </Grid>
             <ListView x:Name="listaDirecciones" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="300" Grid.Row="1" Grid.Column="0" BorderThickness="0,1,0,0"/>
