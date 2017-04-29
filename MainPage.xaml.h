@@ -44,42 +44,32 @@ namespace GettingData
 	private:
 
 		//Parte OSC
+		//scrutura para soportar direccion y puert
 		struct direccion {
 			std::string ip{ "127.0.0.1" };
 			int			port{ 7000 };
 		};
+		//contenedor de direcciones a las que se le enviarán los datos en formato PSC
 		std::vector<direccion> mDirecciones;
 
 
-		//Los checkboxes se compara contra este valor, con tru o false no funciona
-		Platform::IBox<bool>^ isTrue;
-		Platform::Object^ pvBool;
-
+		//Funciones para enviar tipos de datos diferentes por OSC
 		void sendOsc(std::string address, float value);
 		void sendOscFloat(std::string tag, float value);
 		void sendOscInt(std::string address, std::string tag, int value);
 		void sendOscFloatVector(std::string address, std::string tag, const std::vector<double> values);
-
+		//Función para validación de dirección IP, regresa false si la cadena de texto no está en formato IPv4 válido
 		bool validateIpAddress(const std::string &ipAddress);
-
+		
+		//Manda el promedio del arreglo buffer
+		//Todos los arreglos buffer se consideran de 6 elementos
 		void sendMeanBuffer(double * buffer, std::string tag);
+		//Calcula el promedio del buffers
 		double getMean(double * buffer);
 
 		void send_this_Checked();
 
-		//void toppingsCheckbox_Click(object sender, RoutedEventArgs e);
-
-		//////////////////////////////////////////////////////
-		/// Initialization functions
-
-		/// Initializes the combobox for selecting which type of
-		/// data you want to receive.
-		void init_data_type_combobox();
-
-		/// Adds a name to the combobox for selecting which type of
-		/// data you want to receive and associates a packet type with
-		/// the name.
-		void add_type(Platform::String^ name, MuseDataPacketType type);
+		
 
 		//////////////////////////////////////////////////////
 		/// Bluetooth functions
@@ -153,10 +143,6 @@ namespace GettingData
 		/// This will toggle between pause and resume data transmission.
 		void pause_resume_clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 
-		/// Called when the user selects a different data type to display from
-		/// the center combobox.
-		void data_type_selection_changed(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
-
 
 
 
@@ -190,31 +176,7 @@ namespace GettingData
 		/// \param type The MuseDataPacketType you want to display.
 		void change_data_type(MuseDataPacketType type);
 
-		/// Update the titles of the displayed data to reflect the type of packet
-		/// that we are receiving; Accelerometer, Battery, DrlRef, EEG, Gyro or
-		/// Artifact respectively.  EEG is used for all EEG derived values like
-		/// ALPHA_ABSOLUTE, BETA_RELATIVE, HSI_PRECISION, etc.
-		void set_accel_ui();
-		void set_battery_ui();
-		void set_drl_ref_ui();
-		void set_eeg_ui();
-		void set_gyro_ui();
-		void set_artifacts_ui();
-
-		/// Sets the text on a single line to the specified value.  Hides or
-		/// shows the line as appropriate.
-		///
-		/// \param label The TextBlock that defines the type of data.
-		/// \param name  The value to set as the Text in "label".
-		/// \param data  The TextBlock that defines the value of the data.
-		///              This will be initialized to 0.0
-		/// \param visible True if the line should be shown, false if it should
-		///                be hidden.
-		void set_ui_line(::Windows::UI::Xaml::Controls::TextBlock^ label,
-			::Platform::String^ name,
-			::Windows::UI::Xaml::Controls::TextBlock^ data,
-			bool visible);
-
+		
 		/// Formats a double value to a String with the desired number of
 		/// decimal places.
 		Platform::String^ formatData(double data) const;

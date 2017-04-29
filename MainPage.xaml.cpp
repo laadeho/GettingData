@@ -52,8 +52,6 @@ MainPage::MainPage() :
 
 
 	queue_ui_update();
-	Platform::Object^ pvBool = Windows::Foundation::PropertyValue::CreateBoolean(true);
-	isTrue = dynamic_cast<Platform::IBox<bool>^>(pvBool);
 
 	manager_ = MuseManagerWindows::getInstance();
 	muse_listener_ = std::make_shared<GettingData::MuseListenerWin>(this);
@@ -281,45 +279,6 @@ void MainPage::pause_resume_clicked(Platform::Object ^ sender, Windows::UI::Xaml
 	}
 }
 
-void MainPage::data_type_selection_changed(Platform::Object^ sender,
-	Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
-{
-	if (e->AddedItems->Size > 0) {
-
-		String^ added = (String^)e->AddedItems->GetAt(0);
-		MuseDataPacketType type =
-			(MuseDataPacketType)name_to_type_map_.Lookup(added);
-
-		change_data_type(type);
-
-		switch (type) {
-		case MuseDataPacketType::ACCELEROMETER:
-			set_accel_ui();
-			break;
-		case MuseDataPacketType::GYRO:
-			set_gyro_ui();
-			break;
-		case MuseDataPacketType::BATTERY:
-			set_battery_ui();
-			break;
-		case MuseDataPacketType::DRL_REF:
-			set_drl_ref_ui();
-			break;
-		case MuseDataPacketType::ARTIFACTS:
-			set_artifacts_ui();
-
-			break;
-		default:
-			// All other packet types derive from EEG data.
-			set_eeg_ui();
-			break;
-		}
-	}
-	else {
-		change_data_type(MuseDataPacketType::EEG);
-		set_eeg_ui();
-	}
-}
 
 void MainPage::queue_ui_update() {
 	create_task([this]() {
@@ -498,70 +457,8 @@ void MainPage::change_data_type(MuseDataPacketType type) {
 	current_data_type_ = type;
 }
 
-void MainPage::set_accel_ui() {
-	set_ui_line(line_1_label, "X", line_1_data, true);
-	set_ui_line(line_2_label, "Y", line_2_data, true);
-	set_ui_line(line_3_label, "Z", line_3_data, true);
-	set_ui_line(line_4_label, "", line_4_data, false);
-	set_ui_line(line_5_label, "", line_5_data, false);
-	set_ui_line(line_6_label, "", line_6_data, false);
-}
 
-void MainPage::set_battery_ui() {
-	set_ui_line(line_1_label, "CHARGE_PERCENTAGE_REMAINING", line_1_data, true);
-	set_ui_line(line_2_label, "MILLIVOLTS", line_2_data, true);
-	set_ui_line(line_3_label, "TEMPERATURE_CELSIUS", line_3_data, true);
-	set_ui_line(line_4_label, "", line_4_data, false);
-	set_ui_line(line_5_label, "", line_5_data, false);
-	set_ui_line(line_6_label, "", line_6_data, false);
-}
 
-void MainPage::set_drl_ref_ui() {
-	set_ui_line(line_1_label, "DRL", line_1_data, true);
-	set_ui_line(line_2_label, "REF", line_2_data, true);
-	set_ui_line(line_3_label, "", line_3_data, false);
-	set_ui_line(line_4_label, "", line_4_data, false);
-	set_ui_line(line_5_label, "", line_5_data, false);
-	set_ui_line(line_6_label, "", line_6_data, false);
-}
-
-void MainPage::set_eeg_ui() {
-	set_ui_line(line_1_label, "EEG1", line_1_data, true);
-	set_ui_line(line_2_label, "EEG2", line_2_data, true);
-	set_ui_line(line_3_label, "EEG3", line_3_data, true);
-	set_ui_line(line_4_label, "EEG4", line_4_data, true);
-	set_ui_line(line_5_label, "AUX_LEFT", line_5_data, true);
-	set_ui_line(line_6_label, "AUX_RIGHT", line_6_data, true);
-}
-
-void MainPage::set_gyro_ui() {
-	set_ui_line(line_1_label, "X", line_1_data, true);
-	set_ui_line(line_2_label, "Y", line_2_data, true);
-	set_ui_line(line_3_label, "Z", line_3_data, true);
-	set_ui_line(line_4_label, "", line_4_data, false);
-	set_ui_line(line_5_label, "", line_5_data, false);
-	set_ui_line(line_6_label, "", line_6_data, false);
-}
-
-void MainPage::set_artifacts_ui() {
-	set_ui_line(line_1_label, "HEADBAND_ON", line_1_data, true);
-	set_ui_line(line_2_label, "BLINK", line_2_data, true);
-	set_ui_line(line_3_label, "JAW_CLENCH", line_3_data, true);
-	set_ui_line(line_4_label, "", line_4_data, false);
-	set_ui_line(line_5_label, "", line_5_data, false);
-	set_ui_line(line_6_label, "", line_6_data, false);
-}
-
-void MainPage::set_ui_line(TextBlock^ label, String^ name, TextBlock^ data, bool visible) {
-	label->Text = name;
-	data->Text = "0.0";
-
-	Windows::UI::Xaml::Visibility visibility = (visible)
-		? Windows::UI::Xaml::Visibility::Visible
-		: Windows::UI::Xaml::Visibility::Collapsed;
-	label->Visibility = visibility;
-	data->Visibility = visibility;
-}
 
 Platform::String^ MainPage::formatData(double data) const
 {
