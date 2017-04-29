@@ -39,6 +39,8 @@ public:
     /// updated with all of the data contained in the model.
     void clear_dirty_flag();
 
+	//Estas variables dirty son para avisar si hay datos nuevos que se deban enviar
+	//Uno para cada uno de los campos que necesitamos.
 	void clearDirtyAccel() { mDirtyAccel = false; };
 	void clearDirtyBattery() { mDirtyBattery = false; };
 	void clearDirtyDrlRef() { mDirtyDrlRef = false; };
@@ -48,6 +50,8 @@ public:
 	void clearDirtyEggDelta() { mDirtyEggDelta = false; };
 	void clearDirtyEggTheta() { mDirtyEggTheta = false; };
 	void clearDirtyEggGamma() { mDirtyEggGamma = false; };
+
+	void setAllDirty(bool dirty);
 
     /// Erases all data stored in the model.  More heavyweight than clear_dirty_flag
     void clear();
@@ -129,6 +133,7 @@ private:
 		mDirtyEggBeta,
 		mDirtyEggDelta,
 		mDirtyEggTheta,
-		mDirtyEggGamma;
+		mDirtyEggGamma
+		;
 
 };

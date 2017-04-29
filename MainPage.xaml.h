@@ -48,6 +48,11 @@ namespace GettingData
 		};
 		std::vector<direccion> mDirecciones;
 
+
+		//Los checkboxes se compara contra este valor, con tru o false no funciona
+		Platform::IBox<bool>^ isTrue;
+		Platform::Object^ pvBool;
+
 		void sendOsc(std::string address, float value);
 		void sendOscFloat(std::string tag, float value);
 		void sendOscInt(std::string address, std::string tag, int value);
@@ -257,7 +262,8 @@ namespace GettingData
 		bool enable_data_;
 		void Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void addIP_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-	};
+		void Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+};
 
 
 	//////////////////////////////////////////////////////

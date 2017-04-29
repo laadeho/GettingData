@@ -42,6 +42,22 @@ void DataModel::clear_dirty_flag() {
 
 }
 
+void DataModel::setAllDirty(bool dirty)
+{
+	dirty_ = true;
+	mDirtyAccel = true;
+	mDirtyBattery = true;
+	mDirtyEgg = true;
+	mDirtyGyro = true;
+	mDirtyDrlRef = true;
+	mDirtyEggAlpha = true;
+	mDirtyEggBeta = true;
+	mDirtyEggDelta = true;
+	mDirtyEggTheta = true;
+	mDirtyEggGamma = true;
+
+}
+
 void DataModel::clear() {
     dirty_ = false;
 	mDirtyAccel = false;
@@ -49,6 +65,13 @@ void DataModel::clear() {
 	mDirtyEgg = false;
 	mDirtyGyro = false;
 	mDirtyDrlRef = false;
+
+	mDirtyEggAlpha = false;
+	mDirtyEggBeta  = false;
+	mDirtyEggDelta = false;
+	mDirtyEggTheta = false;
+	mDirtyEggGamma = false;
+
     connection_state_string_ = "Unknown";
     version_string_ = "Unknown";
     for (int i = 0; i < 6; i++) {

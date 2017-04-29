@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="DarkGray">
+    <Grid>
         <ComboBox x:Name="muse_list_combobox" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top"/>
         <Button x:Name="refresh_button" Content="Refresh" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Click="refresh_button_clicked"/>
         <Button x:Name="connect_button" Content="Connect" HorizontalAlignment="Center" Margin="0,74,0,0" VerticalAlignment="Top" Click="connect_button_clicked"/>
@@ -168,7 +168,9 @@
                     <Run Text="Menos IP"/><LineBreak/><Run/>
                 </TextBlock>
             </Grid>
-            <ListView x:Name="listaDirecciones" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="300" Grid.Row="1" Grid.Column="0"/>
+            <ListView x:Name="listaDirecciones" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="300" Grid.Row="1" Grid.Column="0" BorderThickness="0,1,0,0"/>
+            <TextBlock HorizontalAlignment="Left" Margin="0,144,0,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="Direcciones" VerticalAlignment="Top" Width="121"/>
+            <Button Content="Probar OSC" HorizontalAlignment="Left" Margin="302,122,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
         </Grid>
     </Grid>
 </Page>

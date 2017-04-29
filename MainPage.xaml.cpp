@@ -52,6 +52,8 @@ MainPage::MainPage() :
 	init_data_type_combobox();
 
 	queue_ui_update();
+	Platform::Object^ pvBool = Windows::Foundation::PropertyValue::CreateBoolean(true);
+	isTrue = dynamic_cast<Platform::IBox<bool>^>(pvBool);
 
 	manager_ = MuseManagerWindows::getInstance();
 	muse_listener_ = std::make_shared<GettingData::MuseListenerWin>(this);
@@ -154,13 +156,18 @@ void MainPage::sendOscFloatVector(std::string address, std::string tag, const st
 		char buffer[OUTPUT_BUFFER_SIZE];
 		osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
 
+
+		std::stringstream ss;
+		
+
 		p << osc::BeginBundleImmediate
 			<< osc::BeginMessage(tag.c_str());
+		
 		for (auto value : values) {
 			p << value;
 		}
 
-		p << osc::EndBundle;
+		p << osc::EndMessage << osc::EndBundle;
 
 		transmitSocket.Send(p.Data(), p.Size());
 	}
@@ -240,17 +247,33 @@ void MainPage::receive_connection_packet(const MuseConnectionPacket & packet, co
 	}
 
 }
-
+//REcibe los paquetes
 void MainPage::receive_muse_data_packet(const std::shared_ptr<MuseDataPacket> & packet, const std::shared_ptr<Muse> & muse) {
 	model_.set_values(packet);
 	OutputDebugString(L"MainPage::receive_muse_data_packet\n");
 }
-
+//Recibe los artifacts, parece que son eventos menos frecuente, al recibir envio y no meto al data model.
 void MainPage::receive_muse_artifact_packet(const MuseArtifactPacket & packet, const std::shared_ptr<Muse> & muse) {
 	model_.set_values(packet);
-	//std::cout << "TEST: " << packet.blink << std::endl;
-	//OutputDebugString(packet.blink);
-	sendOsc("Blink", packet.blink);
+
+	double hb		= packet.headband_on ?  1.0 :  0.0;
+	double blink	= packet.blink ? 1.0 : 0.0;
+	double jaw		= packet.jaw_clench ? 1.0 : 0.0;
+
+	artifactHead->Text	= "" + hb;
+	artifactBlink->Text = "" + blink;
+	artifactJaw->Text	= "" + jaw;
+
+
+	Platform::IBox<bool>^ iboxBool;
+	iboxBool = enviaArtifacts->IsChecked;
+	if (iboxBool->Value) {
+			std::vector<double> dats{ hb, blink, jaw };
+			sendOscFloatVector("", "/artifacts", dats);
+		
+	}
+	
+
 	OutputDebugString(L"MainPage::receive_artifact_packet\n");
 }
 
@@ -348,22 +371,15 @@ void MainPage::queue_ui_update() {
 
 // Call only from the UI thread.
 void MainPage::update_ui() {
-	/*if (model_.is_dirty()) {
-	double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-	model_.get_buffer(buffer);
 
-	line_1_data->Text = formatData(buffer[0]);
-	line_2_data->Text = formatData(buffer[1]);
-	line_3_data->Text = formatData(buffer[2]);
-	line_4_data->Text = formatData(buffer[3]);
-	line_5_data->Text = formatData(buffer[4]);
-	line_6_data->Text = formatData(buffer[5]);
-	connection_status->Text = Convert::to_platform_string(model_.get_connection_state());
-	version->Text = Convert::to_platform_string(model_.get_version());
-
-	model_.clear_dirty_flag();
-	}*/
-
+	/*
+	Platform::IBox<bool>^ iboxBool;
+	iboxBool = enviaAlpha->IsChecked;
+	if (iboxBool->Value) {
+	}
+	*/
+	//El horror, se requiere para comprobar si el checkbox está listo
+	Platform::IBox<bool>^ iboxBool;
 	//Si se ha recibido cualquier tipo de datos proceder
 	if (model_.is_dirty()) {
 		connection_status->Text = Convert::to_platform_string(model_.get_connection_state());
@@ -375,8 +391,8 @@ void MainPage::update_ui() {
 			model_.getBufferEggAplha(buffer);
 			double mean = getMean(buffer);
 			alphaPromedio->Text = "" + mean;
-
-			if (enviaAlpha->IsChecked) {
+			iboxBool = enviaAlpha->IsChecked;
+			if (iboxBool->Value) {
 
 				sendOscFloat("/alpha", mean);
 				//sendMeanBuffer(buffer, "/alpha");	
@@ -390,19 +406,21 @@ void MainPage::update_ui() {
 			model_.getBufferEggBeta(buffer);
 			double mean = getMean(buffer);
 			betaPromedio->Text = "" + mean;
-			if (enviaBeta->IsChecked) {
+			iboxBool = enviaBeta->IsChecked;
+			if (iboxBool->Value) {
 				sendOscFloat("/beta", mean);
 			}
 			model_.clearDirtyEggBeta();
 		}
 
 		//Si ha recibido nuevos valores para Delta relative
-		if (model_.isDirtyEggDelta()) {
+		if (model_.isDirtyEggDelta() == true) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 			model_.getBufferEggDelta(buffer);
 			double mean = getMean(buffer);
 			deltaPromedio->Text = "" + mean;
-			if (enviaDelta->IsChecked) {
+			iboxBool = enviaDelta->IsChecked;
+			if (iboxBool->Value) {
 				sendOscFloat("/delta", mean);
 			}
 			model_.clearDirtyEggDelta();
@@ -414,7 +432,8 @@ void MainPage::update_ui() {
 			model_.getBufferEggTheta(buffer);
 			double mean = getMean(buffer);
 			thetaPromedio->Text = "" + mean;
-			if (enviaTheta->IsChecked) {
+			iboxBool = enviaTheta->IsChecked;
+			if (iboxBool->Value) {
 				sendOscFloat("/theta", mean);
 			}
 			model_.clearDirtyEggTheta();
@@ -426,23 +445,25 @@ void MainPage::update_ui() {
 			model_.getBufferEggGamma(buffer);
 			double mean = getMean(buffer);
 			gammaPromedio->Text = "" + mean;
-			if (enviaGamma->IsChecked) {
+			iboxBool = enviaGamma->IsChecked;
+			if (iboxBool->Value) {
 				sendOscFloat("/gamma", mean);
 			}
 			model_.clearDirtyEggGamma();
 		}
 
 
-		//Mandar los datos de artifacts
+		//Mandar los datos de Battery
 		if (model_.isDirtyBattery()) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 			model_.getBufferBattery(buffer);
 			battery->Text = "" + buffer[0];
-			if (Battery->IsChecked) {
-				sendOscFloat("/artifacts", (float)buffer[0]);
+			iboxBool = Battery->IsChecked;
+			if (iboxBool->Value) {
+				sendOscFloat("/battery", (float)buffer[0]);
 			}
 
-			model_.clearDirtyAccel();
+			model_.clearDirtyBattery();
 		}
 
 		//Mandar los datos del acelerómetro
@@ -452,22 +473,24 @@ void MainPage::update_ui() {
 			accX->Text = "" + buffer[0];
 			accY->Text = "" + buffer[1];
 			accZ->Text = "" + buffer[2];
-			if (enviaAccelerometer->IsChecked) {
+			iboxBool = enviaAccelerometer->IsChecked;
+			if (iboxBool->Value) {
 				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
 				sendOscFloatVector("", "/accelerometer", dats);
 			}
 
-			model_.clearDirtyBattery();
+			model_.clearDirtyAccel();
 		}
 
 		//Mandar los datos del gyro
-		if (model_.isDirtyGyro()) {
+		if (model_.isDirtyGyro() == true) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 			model_.getBufferGyro(buffer);
 			gyroX->Text = "" + buffer[0];
 			gyroY->Text = "" + buffer[1];
 			gyroZ->Text = "" + buffer[2];
-			if (enviaGyro->IsChecked) {
+			iboxBool = enviaGyro->IsChecked;
+			if (iboxBool->Value) {
 				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
 				sendOscFloatVector("", "/gyro", dats);
 			}
@@ -616,8 +639,11 @@ void GettingData::MainPage::Button_Click(Platform::Object^ sender, Windows::UI::
 		return;
 	}
 
-	mDirecciones.erase(mDirecciones.begin() + listaDirecciones->SelectedIndex);
-	listaDirecciones->Items->RemoveAt(listaDirecciones->SelectedIndex);
+	if (listaDirecciones->SelectedIndex >= 0) {
+
+		mDirecciones.erase(mDirecciones.begin() + listaDirecciones->SelectedIndex);
+		listaDirecciones->Items->RemoveAt(listaDirecciones->SelectedIndex);
+	}
 }
 
 
@@ -641,6 +667,27 @@ void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::X
 	dire.ip = fooA;
 	dire.port = _wtoi(nuevoPuerto->Text->ToString()->Data());
 	mDirecciones.push_back(dire);
+
+
+}
+
+
+void GettingData::MainPage::Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	model_.setAllDirty(true);
+	
+	
+	Platform::IBox<bool>^ iboxBool;
+	iboxBool = enviaArtifacts->IsChecked;
+
+	artifactHead->Text = "" + 2.0;
+	artifactBlink->Text = "" + 2.0;
+	artifactJaw->Text = "" + 2.0;
+	if (iboxBool->Value) {
+		std::vector<double> dats{ 1.0, 1.0, 1.0 };
+		sendOscFloatVector("", "/artifacts", dats);
+
+	}
 
 
 }
