@@ -60,7 +60,11 @@ MainPage::MainPage() :
 	manager_->set_muse_listener(muse_listener_);
 	is_bluetooth_enabled_.store(false);
 	check_bluetooth_enabled();
+	
+	
 }
+
+
 
 
 //******************************************
@@ -166,6 +170,36 @@ void MainPage::send_this_Checked() {
 
 }
 
+void GettingData::MainPage::registerListener()
+{
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ACCELEROMETER);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GYRO);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::EEG);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DROPPED_ACCELEROMETER);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DROPPED_EEG);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::QUANTIZATION);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BATTERY);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_ABSOLUTE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_ABSOLUTE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_ABSOLUTE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_ABSOLUTE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_ABSOLUTE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_RELATIVE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_RELATIVE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_RELATIVE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_RELATIVE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_RELATIVE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_SCORE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_SCORE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_SCORE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_SCORE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_SCORE);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::IS_GOOD);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI_PRECISION);
+	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ARTIFACTS);
+}
+
 
 
 void MainPage::check_bluetooth_enabled() {
@@ -205,6 +239,7 @@ void MainPage::receive_connection_packet(const MuseConnectionPacket & packet, co
 	if (packet.current_connection_state == ConnectionState::CONNECTED) {
 		auto version = my_muse_->get_muse_version();
 		model_.set_version(version->get_firmware_version());
+		registerListener();
 	}
 	else {
 		model_.set_version("Unknown");
@@ -310,6 +345,8 @@ void MainPage::update_ui() {
 		connection_status->Text = Convert::to_platform_string(model_.get_connection_state());
 		version->Text = Convert::to_platform_string(model_.get_version());
 
+
+		
 		//Si ha recibido nuevos valores para Alpha relative
 		if (model_.isDirtyEggAlpha()) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -422,6 +459,16 @@ void MainPage::update_ui() {
 
 			model_.clearDirtyGyro();
 		}
+
+		iboxBool = enviaIsGood->IsChecked;
+		if (iboxBool->Value) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferEggAplha(buffer);
+			std::vector<double> dats{ buffer[0], buffer[1], buffer[2], buffer[3], buffer[4], buffer[5] };
+			sendOscFloatVector("", "/eeg", dats);
+
+		}
+		model_.clear();
 	}
 	queue_ui_update();
 }

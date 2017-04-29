@@ -65,6 +65,7 @@ public:
 	void getBufferBattery(double *buffer) const;
 	void getBufferDrlRef(double *buffer) const;
 	void getBufferGyro(double *buffer) const;
+	void getBufferEgg(double *buffer) const;
 	void getBufferEggAplha(double *buffer) const;
 	void getBufferEggBeta(double *buffer) const;
 	void getBufferEggDelta(double *buffer) const;

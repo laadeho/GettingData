@@ -125,6 +125,13 @@ void DataModel::getBufferGyro(double * buffer) const
 	}
 }
 
+void DataModel::getBufferEgg(double *buffer) const
+{
+	for (int i = 0; i < 6; i++) {
+		buffer[i] = mDataEgg[i];
+	}
+};
+
 void DataModel::getBufferEggAplha(double * buffer) const
 {
 	for (int i = 0; i < 6; i++) {

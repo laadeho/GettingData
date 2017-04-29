@@ -69,7 +69,7 @@ namespace GettingData
 
 		void send_this_Checked();
 
-		
+		void registerListener();
 
 		//////////////////////////////////////////////////////
 		/// Bluetooth functions
