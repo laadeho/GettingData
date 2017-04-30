@@ -73,7 +73,11 @@
     <PackageCertificateThumbprint>65F567178084F9818AD28F798B36ADA86420FDD2</PackageCertificateThumbprint>
     <PackageCertificateKeyFile>GettingData_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+<<<<<<< HEAD
     <AppxPackageDir>D:\code\libmuse_6.0.0\windows\examples\GettingData\app\</AppxPackageDir>
+=======
+    <AppxPackageDir>D:\code\libmuse_6.0.0_b\windows\examples\GettingData\app\</AppxPackageDir>
+>>>>>>> 3f8a51a265a8b0687ef4f5f3f03c49bdd926e646
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86</AppxBundlePlatforms>
   </PropertyGroup>
