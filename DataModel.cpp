@@ -25,7 +25,7 @@ DataModel::DataModel() {
 	mDataEggDelta	= new double[6];
 	mDataEggTheta	= new double[6];
 	mDataEggGamma	= new double[6];
-	
+	mDataArtifacts	= new double[6];
     clear();
 }
 
@@ -168,6 +168,13 @@ void DataModel::getBufferEggGamma(double * buffer) const
 	}
 }
 
+void DataModel::getBufferActifacts(double *buffer) const
+{
+	for (int i = 0; i < 6; i++) {
+		buffer[i] = mDataArtifacts[i];
+	}
+};
+
 const std::string &DataModel::get_connection_state() const {
     return connection_state_string_;
 }
@@ -204,20 +211,27 @@ void DataModel::set_values(const std::shared_ptr<MuseDataPacket> &p) {
 	case MuseDataPacketType::GAMMA_RELATIVE:
 		setEggData(p, mDataEggGamma, &mDirtyEggGamma);
 		break;
+	case MuseDataPacketType::EEG:
+		//setEggData(p, mDataEggGamma, &mDirtyEggGamma);
+		set_eeg_data(p);
+		break;
+
+
     default:
-        set_eeg_data(p);
+       // set_eeg_data(p);
         break;
     }
     dirty_ = true;
 }
 
 void DataModel::set_values(const MuseArtifactPacket & p) {
-    data_buffer_[0] = p.headband_on ? 1.0 : 0.0;
-    data_buffer_[1] = p.blink ? 1.0 : 0.0;
-    data_buffer_[2] = p.jaw_clench ? 1.0 : 0.0;
-    data_buffer_[3] = 0.0;
-    data_buffer_[4] = 0.0;
-    data_buffer_[5] = 0.0;
+    mDataArtifacts[0] = p.headband_on ? 1.0 : 0.0;
+	mDataArtifacts[1] = p.blink ? 1.0 : 0.0;
+	mDataArtifacts[2] = p.jaw_clench ? 1.0 : 0.0;
+	mDataArtifacts[3] = 0.0;
+	mDataArtifacts[4] = 0.0;
+	mDataArtifacts[5] = 0.0;
+	mDirtyArtifacts = true;
     dirty_ = true;
 }
 
@@ -254,7 +268,7 @@ void DataModel::set_accel_data(const std::shared_ptr<MuseDataPacket> &p) {
 	mDataAccel[3] = 0.0;
 	mDataAccel[4] = 0.0;
 	mDataAccel[5] = 0.0;
-
+	mDirtyAccel = true;
 }
 
 void DataModel::set_battery_data(const std::shared_ptr<MuseDataPacket> &p) {

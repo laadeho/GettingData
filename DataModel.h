@@ -34,6 +34,7 @@ public:
 	bool isDirtyEggDelta() const { return mDirtyEggDelta; };
 	bool isDirtyEggTheta() const { return mDirtyEggTheta; };
 	bool isDirtyEggGamma() const { return mDirtyEggGamma; };
+	bool isDirtyArtifacts() const { return mDirtyArtifacts; };
 
     /// Called by the UI update function to indicate that the UI has been
     /// updated with all of the data contained in the model.
@@ -50,6 +51,8 @@ public:
 	void clearDirtyEggDelta() { mDirtyEggDelta = false; };
 	void clearDirtyEggTheta() { mDirtyEggTheta = false; };
 	void clearDirtyEggGamma() { mDirtyEggGamma = false; };
+	void clearDirtyEgg() { mDirtyEgg = false; };
+	void clearDirtyArtifacts() { mDirtyArtifacts = false; };
 
 	void setAllDirty(bool dirty);
 
@@ -71,6 +74,7 @@ public:
 	void getBufferEggDelta(double *buffer) const;
 	void getBufferEggTheta(double *buffer) const;
 	void getBufferEggGamma(double *buffer) const;
+	void getBufferActifacts(double *buffer) const;
 
     /// Returns the current connection state of the Muse headband.
     const std::string &get_connection_state() const;
@@ -112,7 +116,8 @@ private:
 		*mDataEggBeta,
 		*mDataEggDelta,
 		*mDataEggTheta,
-		*mDataEggGamma;
+		*mDataEggGamma,
+		*mDataArtifacts;
 
 
     /// The String that represents the latest received connection state
@@ -134,7 +139,8 @@ private:
 		mDirtyEggBeta,
 		mDirtyEggDelta,
 		mDirtyEggTheta,
-		mDirtyEggGamma
+		mDirtyEggGamma,
+		mDirtyArtifacts
 		;
 
 };

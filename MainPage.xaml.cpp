@@ -175,28 +175,29 @@ void GettingData::MainPage::registerListener()
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ACCELEROMETER);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GYRO);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::EEG);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DROPPED_ACCELEROMETER);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DROPPED_EEG);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::QUANTIZATION);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DROPPED_ACCELEROMETER);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DROPPED_EEG);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::QUANTIZATION);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BATTERY);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_ABSOLUTE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_ABSOLUTE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_ABSOLUTE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_ABSOLUTE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_ABSOLUTE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_ABSOLUTE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_ABSOLUTE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_ABSOLUTE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_ABSOLUTE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_ABSOLUTE);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_RELATIVE);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_RELATIVE);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_RELATIVE);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_RELATIVE);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_RELATIVE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_SCORE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_SCORE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_SCORE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_SCORE);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_SCORE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ALPHA_SCORE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::BETA_SCORE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::DELTA_SCORE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::THETA_SCORE);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::GAMMA_SCORE);
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::IS_GOOD);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI);
-	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI_PRECISION);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI);
+	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI_PRECISION);
+	
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ARTIFACTS);
 }
 
@@ -249,31 +250,14 @@ void MainPage::receive_connection_packet(const MuseConnectionPacket & packet, co
 //REcibe los paquetes
 void MainPage::receive_muse_data_packet(const std::shared_ptr<MuseDataPacket> & packet, const std::shared_ptr<Muse> & muse) {
 	model_.set_values(packet);
-	OutputDebugString(L"MainPage::receive_muse_data_packet\n");
+	//OutputDebugString(L"MainPage::receive_muse_data_packet\n");
 }
 //Recibe los artifacts, parece que son eventos menos frecuente, al recibir envio y no meto al data model.
 void MainPage::receive_muse_artifact_packet(const MuseArtifactPacket & packet, const std::shared_ptr<Muse> & muse) {
 	model_.set_values(packet);
-
-	double hb		= packet.headband_on ?  1.0 :  0.0;
-	double blink	= packet.blink ? 1.0 : 0.0;
-	double jaw		= packet.jaw_clench ? 1.0 : 0.0;
-
-	artifactHead->Text	= "" + hb;
-	artifactBlink->Text = "" + blink;
-	artifactJaw->Text	= "" + jaw;
-
-
-	Platform::IBox<bool>^ iboxBool;
-	iboxBool = enviaArtifacts->IsChecked;
-	if (iboxBool->Value) {
-			std::vector<double> dats{ hb, blink, jaw };
-			sendOscFloatVector("", "/artifacts", dats);
-		
-	}
-	
-
 	OutputDebugString(L"MainPage::receive_artifact_packet\n");
+	
+	
 }
 
 void MainPage::refresh_button_clicked(Platform::Object^ sender,
@@ -460,14 +444,46 @@ void MainPage::update_ui() {
 			model_.clearDirtyGyro();
 		}
 
-		iboxBool = enviaIsGood->IsChecked;
-		if (iboxBool->Value) {
+
+		//Mandar los datos EGG
+		//OH chinga!
+		if (model_.isDirtyEgg() == true) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 			model_.getBufferEggAplha(buffer);
-			std::vector<double> dats{ buffer[0], buffer[1], buffer[2], buffer[3], buffer[4], buffer[5] };
-			sendOscFloatVector("", "/eeg", dats);
+			EEG1->Text = "" + buffer[0];
+			EEG2->Text = "" + buffer[1];
+			EEG3->Text = "" + buffer[2];
+			EEG4->Text = "" + buffer[3];
+			auxLeft->Text = "" + buffer[4];
+			auxRight->Text = "" + buffer[5];
 
+			iboxBool = enviaIsGood->IsChecked;
+			if (iboxBool->Value) {
+				std::vector<double> dats{ buffer[0], buffer[1], buffer[2], buffer[3], buffer[4], buffer[5] };
+				sendOscFloatVector("", "/eeg", dats);
+
+			}
 		}
+
+		if (model_.isDirtyArtifacts() == true) {
+			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+			model_.getBufferActifacts(buffer);
+
+			artifactHead->Text	= "" + buffer[0];
+			artifactBlink->Text = "" + buffer[1];
+			artifactJaw->Text	= "" + buffer[2];
+
+			//return;
+			Platform::IBox<bool>^ iboxBool;
+			iboxBool = enviaArtifacts->IsChecked;
+			if (iboxBool->Value) {
+				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
+				sendOscFloatVector("", "/artifacts", dats);
+
+			}
+			model_.clearDirtyArtifacts();
+		}
+
 		model_.clear();
 	}
 	queue_ui_update();
