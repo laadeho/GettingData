@@ -72,6 +72,10 @@
   <PropertyGroup Label="UserMacros">
     <PackageCertificateThumbprint>878CDCD979E656260E7A0E9B12289CA5FDC56057</PackageCertificateThumbprint>
     <PackageCertificateKeyFile>GettingData_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>D:\code\libmuse_6.0.0_b\windows\examples\GettingData\app\</AppxPackageDir>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

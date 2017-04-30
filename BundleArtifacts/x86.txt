@@ -1,0 +1,6 @@
+MainPackage=D:\code\libmuse_6.0.0_b\windows\examples\Release\GettingData\GettingData_0.2.1.0_Win32.appx
+SymbolPackage=D:\code\libmuse_6.0.0_b\windows\examples\GettingData\app\GettingData_0.2.1.0_Test\GettingData_0.2.1.0_Win32.appxsym
+ResourcePack=D:\code\libmuse_6.0.0_b\windows\examples\Release\GettingData\GettingData_0.2.1.0_scale-100.appx
+ResourcePack=D:\code\libmuse_6.0.0_b\windows\examples\Release\GettingData\GettingData_0.2.1.0_scale-125.appx
+ResourcePack=D:\code\libmuse_6.0.0_b\windows\examples\Release\GettingData\GettingData_0.2.1.0_scale-150.appx
+ResourcePack=D:\code\libmuse_6.0.0_b\windows\examples\Release\GettingData\GettingData_0.2.1.0_scale-400.appx
