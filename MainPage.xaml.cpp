@@ -607,3 +607,9 @@ bool GettingData::MainPage::validateIpAddress(const std::string &ipAddress)
 	int result = inet_pton(AF_INET, ipAddress.c_str(), &(sa.sin_addr));
 	return result != 0;
 }
+
+
+void GettingData::MainPage::enviaBeta_Checked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+}

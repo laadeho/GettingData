@@ -229,6 +229,7 @@ namespace GettingData
 		void Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void addIP_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void enviaBeta_Checked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };
 
 

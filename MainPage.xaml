@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <CheckBox x:Name="enviaAlpha" IsChecked="True" HorizontalAlignment="Left" Content="Alpha Relative" Grid.Row="0" Grid.Column="0"/>
-            <CheckBox x:Name="enviaBeta" IsChecked="True" HorizontalAlignment="Left" Content="Betha Relative" Grid.Row="1" Grid.Column="0"/>
+            <CheckBox x:Name="enviaBeta" IsChecked="True" HorizontalAlignment="Left" Content="Beta Relative" Grid.Row="1" Grid.Column="0" />
             <CheckBox x:Name="enviaDelta" IsChecked="True" HorizontalAlignment="Left" Content="Delta Relative" Grid.Row="2" Grid.Column="0"/>
             <CheckBox x:Name="enviaTheta" IsChecked="True" HorizontalAlignment="Left" Content="Theta Relative" Grid.Row="3" Grid.Column="0"/>
             <CheckBox x:Name="enviaGamma" IsChecked="True" HorizontalAlignment="Left" Content="Gamma Relative" Grid.Row="4" Grid.Column="0"/>
