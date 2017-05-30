@@ -52,15 +52,19 @@ namespace GettingData
 		//contenedor de direcciones a las que se le enviarán los datos en formato PSC
 		std::vector<direccion> mDirecciones;
 
-
+		int numSensor = 2;
 		//Funciones para enviar tipos de datos diferentes por OSC
-		void sendOsc(std::string address, float value);
-		void sendOscFloat(std::string tag, float value);
+		void sendOsc(std::string address, float value);					// sin sensor
+		void sendOsc(std::string address, int sensor, float value);		// con sensor
+		void sendOscFloat(std::string tag, float value);				// sin sensor
+		void sendOscFloat(std::string tag, int sensor, float value);	// con sensor
 		void sendOscInt(std::string address, std::string tag, int value);
+		void sendOscInt(std::string address, std::string tag, int sensor, int value);
 		void sendOscFloatVector(std::string address, std::string tag, const std::vector<double> values);
+		void sendOscFloatVector(std::string address, std::string tag, int sensor, const std::vector<double> values);
 		//Función para validación de dirección IP, regresa false si la cadena de texto no está en formato IPv4 válido
 		bool validateIpAddress(const std::string &ipAddress);
-		
+
 		//Manda el promedio del arreglo buffer
 		//Todos los arreglos buffer se consideran de 6 elementos
 		void sendMeanBuffer(double * buffer, std::string tag);
@@ -176,7 +180,7 @@ namespace GettingData
 		/// \param type The MuseDataPacketType you want to display.
 		void change_data_type(MuseDataPacketType type);
 
-		
+
 		/// Formats a double value to a String with the desired number of
 		/// decimal places.
 		Platform::String^ formatData(double data) const;
@@ -229,7 +233,7 @@ namespace GettingData
 		void Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void addIP_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-};
+	};
 
 
 	//////////////////////////////////////////////////////

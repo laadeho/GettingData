@@ -12,6 +12,7 @@ namespace GettingData
 	/// <summary>
 	/// Provides application-specific behavior to supplement the default Application class.
 	/// </summary>
+	
 	ref class App sealed
 	{
 	protected:
@@ -25,3 +26,4 @@ namespace GettingData
 		void OnNavigationFailed(Platform::Object ^sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^e);
 	};
 }
+

@@ -61,8 +61,10 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 		rootFrame->NavigationFailed += ref new Windows::UI::Xaml::Navigation::NavigationFailedEventHandler(this, &App::OnNavigationFailed);
 
-		if (e->PreviousExecutionState == ApplicationExecutionState::Terminated)
-		{
+		if (e->PreviousExecutionState == ApplicationExecutionState::Running)
+			//if (e->PreviousExecutionState == ApplicationExecutionState::Terminated)
+			{
+			Window::Current->Activate();
 			// TODO: Restore the saved session state only when appropriate, scheduling the
 			// final launch steps after the restore is complete
 

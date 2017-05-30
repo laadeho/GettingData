@@ -15,7 +15,6 @@
 ////////////////////////////////////////////////////////
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
-
 //#include <QInputDialog>
 /////////////////////////////////////////////////
 
@@ -50,7 +49,6 @@ MainPage::MainPage() :
 {
 	InitializeComponent();
 
-
 	queue_ui_update();
 
 	manager_ = MuseManagerWindows::getInstance();
@@ -60,8 +58,8 @@ MainPage::MainPage() :
 	manager_->set_muse_listener(muse_listener_);
 	is_bluetooth_enabled_.store(false);
 	check_bluetooth_enabled();
-	
-	
+
+
 }
 
 
@@ -87,7 +85,23 @@ void MainPage::sendOsc(std::string address, float value)
 
 	transmitSocket.Send(p.Data(), p.Size());
 }
-void MainPage::sendOscFloat(std::string tag, float value)
+void MainPage::sendOsc(std::string address, int sensor, float value)
+/* void MainPage::sendOsc(std::string address, float value) */
+{
+	UdpTransmitSocket transmitSocket(IpEndpointName(ADDRESS, PORT));
+
+	char buffer[OUTPUT_BUFFER_SIZE];
+	osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+	p << osc::BeginBundleImmediate
+		<< osc::BeginMessage(address.c_str())
+		<< sensor
+		<< value << osc::EndMessage
+		<< osc::EndBundle;
+
+	transmitSocket.Send(p.Data(), p.Size());
+}
+void MainPage::sendOscFloat(std::string tag, float value) // Sin enviar numero de sensor
 {
 	for (auto &dire : mDirecciones) {
 		UdpTransmitSocket transmitSocket(IpEndpointName(dire.ip.c_str(), dire.port));
@@ -103,6 +117,23 @@ void MainPage::sendOscFloat(std::string tag, float value)
 		transmitSocket.Send(p.Data(), p.Size());
 	}
 }
+void MainPage::sendOscFloat(std::string tag, int sensor, float value) // Enviando numero de sensor
+{
+	for (auto &dire : mDirecciones) {
+		UdpTransmitSocket transmitSocket(IpEndpointName(dire.ip.c_str(), dire.port));
+
+		char buffer[OUTPUT_BUFFER_SIZE];
+		osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+		p << osc::BeginBundleImmediate
+			<< osc::BeginMessage(tag.c_str())
+			<< sensor
+			<< value << osc::EndMessage
+			<< osc::EndBundle;
+		transmitSocket.Send(p.Data(), p.Size());
+	}
+}
+
 void MainPage::sendOscInt(std::string address, std::string tag, int value)
 {
 	for (auto &dire : mDirecciones) {
@@ -113,6 +144,23 @@ void MainPage::sendOscInt(std::string address, std::string tag, int value)
 
 		p << osc::BeginBundleImmediate
 			<< osc::BeginMessage(tag.c_str())
+			<< value << osc::EndMessage
+			<< osc::EndBundle;
+
+		transmitSocket.Send(p.Data(), p.Size());
+	}
+}
+void MainPage::sendOscInt(std::string address, std::string tag, int sensor, int value)
+{
+	for (auto &dire : mDirecciones) {
+		UdpTransmitSocket transmitSocket(IpEndpointName(dire.ip.c_str(), dire.port));
+
+		char buffer[OUTPUT_BUFFER_SIZE];
+		osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+		p << osc::BeginBundleImmediate
+			<< osc::BeginMessage(tag.c_str())
+			<< sensor
 			<< value << osc::EndMessage
 			<< osc::EndBundle;
 
@@ -130,11 +178,36 @@ void MainPage::sendOscFloatVector(std::string address, std::string tag, const st
 
 
 		std::stringstream ss;
-		
+
 
 		p << osc::BeginBundleImmediate
 			<< osc::BeginMessage(tag.c_str());
-		
+
+		for (auto value : values) {
+			p << value;
+		}
+
+		p << osc::EndMessage << osc::EndBundle;
+
+		transmitSocket.Send(p.Data(), p.Size());
+	}
+}
+void MainPage::sendOscFloatVector(std::string address, std::string tag, int sensor, const std::vector<double> values)
+{
+	for (auto &dire : mDirecciones) {
+		UdpTransmitSocket transmitSocket(IpEndpointName(dire.ip.c_str(), dire.port));
+
+		char buffer[OUTPUT_BUFFER_SIZE];
+		osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
+
+
+		std::stringstream ss;
+
+
+		p << osc::BeginBundleImmediate
+			<< osc::BeginMessage(tag.c_str())
+			<< sensor;
+
 		for (auto value : values) {
 			p << value;
 		}
@@ -156,6 +229,7 @@ void MainPage::sendMeanBuffer(double *buffer, std::string tag)
 
 	sendOscFloat(tag, mean);
 }
+
 double MainPage::getMean(double * buffer)
 {
 	double mean = 0;
@@ -197,7 +271,7 @@ void GettingData::MainPage::registerListener()
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::IS_GOOD);
 	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI);
 	//my_muse_->register_data_listener(data_listener_, MuseDataPacketType::HSI_PRECISION);
-	
+
 	my_muse_->register_data_listener(data_listener_, MuseDataPacketType::ARTIFACTS);
 }
 
@@ -256,8 +330,8 @@ void MainPage::receive_muse_data_packet(const std::shared_ptr<MuseDataPacket> & 
 void MainPage::receive_muse_artifact_packet(const MuseArtifactPacket & packet, const std::shared_ptr<Muse> & muse) {
 	model_.set_values(packet);
 	OutputDebugString(L"MainPage::receive_artifact_packet\n");
-	
-	
+
+
 }
 
 void MainPage::refresh_button_clicked(Platform::Object^ sender,
@@ -330,7 +404,7 @@ void MainPage::update_ui() {
 		version->Text = Convert::to_platform_string(model_.get_version());
 
 
-		
+
 		//Si ha recibido nuevos valores para Alpha relative
 		if (model_.isDirtyEggAlpha()) {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -339,8 +413,10 @@ void MainPage::update_ui() {
 			alphaPromedio->Text = "" + mean;
 			iboxBool = enviaAlpha->IsChecked;
 			if (iboxBool->Value) {
-
-				sendOscFloat("/alpha", mean);
+				if (numSensor == 0)
+					sendOscFloat("/alpha", mean);
+				else
+					sendOscFloat("/alpha", numSensor, mean);
 				//sendMeanBuffer(buffer, "/alpha");	
 			}
 			model_.clearDirtyEggAplha();
@@ -354,7 +430,10 @@ void MainPage::update_ui() {
 			betaPromedio->Text = "" + mean;
 			iboxBool = enviaBeta->IsChecked;
 			if (iboxBool->Value) {
-				sendOscFloat("/beta", mean);
+				if (numSensor == 0)
+					sendOscFloat("/beta", mean);
+				else
+					sendOscFloat("/beta", numSensor, mean);
 			}
 			model_.clearDirtyEggBeta();
 		}
@@ -367,7 +446,10 @@ void MainPage::update_ui() {
 			deltaPromedio->Text = "" + mean;
 			iboxBool = enviaDelta->IsChecked;
 			if (iboxBool->Value) {
-				sendOscFloat("/delta", mean);
+				if (numSensor == 0)
+					sendOscFloat("/delta", mean);
+				else
+					sendOscFloat("/delta", numSensor, mean);
 			}
 			model_.clearDirtyEggDelta();
 		}
@@ -380,7 +462,10 @@ void MainPage::update_ui() {
 			thetaPromedio->Text = "" + mean;
 			iboxBool = enviaTheta->IsChecked;
 			if (iboxBool->Value) {
-				sendOscFloat("/theta", mean);
+				if (numSensor == 0)
+					sendOscFloat("/theta", mean);
+				else
+					sendOscFloat("/theta", numSensor, mean);
 			}
 			model_.clearDirtyEggTheta();
 		}
@@ -393,7 +478,10 @@ void MainPage::update_ui() {
 			gammaPromedio->Text = "" + mean;
 			iboxBool = enviaGamma->IsChecked;
 			if (iboxBool->Value) {
-				sendOscFloat("/gamma", mean);
+				if (numSensor == 0)
+					sendOscFloat("/gamma", mean);
+				else
+					sendOscFloat("/gamma", numSensor, mean);
 			}
 			model_.clearDirtyEggGamma();
 		}
@@ -406,7 +494,10 @@ void MainPage::update_ui() {
 			battery->Text = "" + buffer[0];
 			iboxBool = Battery->IsChecked;
 			if (iboxBool->Value) {
-				sendOscFloat("/battery", (float)buffer[0]);
+				if (numSensor == 0)
+					sendOscFloat("/battery", (float)buffer[0]);
+				else
+					sendOscFloat("/battery", numSensor, (float)buffer[0]);
 			}
 
 			model_.clearDirtyBattery();
@@ -422,7 +513,10 @@ void MainPage::update_ui() {
 			iboxBool = enviaAccelerometer->IsChecked;
 			if (iboxBool->Value) {
 				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
-				sendOscFloatVector("", "/accelerometer", dats);
+				if (numSensor == 0)
+					sendOscFloatVector("", "/accelerometer", dats);
+				else
+					sendOscFloatVector("", "/accelerometer", numSensor, dats);
 			}
 
 			model_.clearDirtyAccel();
@@ -438,7 +532,10 @@ void MainPage::update_ui() {
 			iboxBool = enviaGyro->IsChecked;
 			if (iboxBool->Value) {
 				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
-				sendOscFloatVector("", "/gyro", dats);
+				if (numSensor == 0)
+					sendOscFloatVector("", "/gyro", dats);
+				else
+					sendOscFloatVector("", "/gyro", numSensor, dats);
 			}
 
 			model_.clearDirtyGyro();
@@ -460,8 +557,10 @@ void MainPage::update_ui() {
 			iboxBool = enviaIsGood->IsChecked;
 			if (iboxBool->Value) {
 				std::vector<double> dats{ buffer[0], buffer[1], buffer[2], buffer[3], buffer[4], buffer[5] };
-				sendOscFloatVector("", "/eeg", dats);
-
+				if (numSensor == 0)
+					sendOscFloatVector("", "/eeg", dats);
+				else
+					sendOscFloatVector("", "/eeg", numSensor, dats);
 			}
 		}
 
@@ -469,16 +568,19 @@ void MainPage::update_ui() {
 			double buffer[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 			model_.getBufferActifacts(buffer);
 
-			artifactHead->Text	= "" + buffer[0];
+			artifactHead->Text = "" + buffer[0];
 			artifactBlink->Text = "" + buffer[1];
-			artifactJaw->Text	= "" + buffer[2];
+			artifactJaw->Text = "" + buffer[2];
 
 			//return;
 			Platform::IBox<bool>^ iboxBool;
 			iboxBool = enviaArtifacts->IsChecked;
 			if (iboxBool->Value) {
 				std::vector<double> dats{ buffer[0], buffer[1], buffer[2] };
-				sendOscFloatVector("", "/artifacts", dats);
+				if (numSensor == 0)
+					sendOscFloatVector("", "/artifacts", dats);
+				else
+					sendOscFloatVector("", "/artifacts", numSensor, dats);
 
 			}
 			model_.clearDirtyArtifacts();
@@ -553,30 +655,25 @@ void GettingData::MainPage::Button_Click(Platform::Object^ sender, Windows::UI::
 void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 
-	if (nuevaIp->Text->ToString() == "" ||  nuevoPuerto->Text->ToString() == "")
+	if (nuevaIp->Text->ToString() == "" || nuevoPuerto->Text->ToString() == "")
 		return;
 	Platform::String^ fooRT = nuevaIp->Text->ToString();
 	std::wstring fooW(fooRT->Begin());
 	std::string fooA(fooW.begin(), fooW.end());
 
 	nuevaIp;
-	if ( !validateIpAddress( fooA ) )
+	if (!validateIpAddress(fooA))
 		return;
 
 	Platform::String^ compuesta = nuevaIp->Text->ToString() + ":" + nuevoPuerto->Text->ToString();
 
 	listaDirecciones->Items->Append(compuesta);
 
-	
-
 	direccion dire;
 	dire.ip = fooA;
 	dire.port = _wtoi(nuevoPuerto->Text->ToString()->Data());
 
-	
-
 	mDirecciones.push_back(dire);
-
 
 }
 
@@ -584,8 +681,8 @@ void GettingData::MainPage::addIP_Click(Platform::Object^ sender, Windows::UI::X
 void GettingData::MainPage::Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	model_.setAllDirty(true);
-	
-	
+
+
 	Platform::IBox<bool>^ iboxBool;
 	iboxBool = enviaArtifacts->IsChecked;
 
@@ -594,11 +691,11 @@ void GettingData::MainPage::Button_Click_1(Platform::Object^ sender, Windows::UI
 	artifactJaw->Text = "" + 2.0;
 	if (iboxBool->Value) {
 		std::vector<double> dats{ 1.0, 1.0, 1.0 };
-		sendOscFloatVector("", "/artifacts", dats);
-
+		if (numSensor == 0)
+			sendOscFloatVector("", "/artifacts", dats);
+		else
+			sendOscFloatVector("", "/artifacts", numSensor, dats);
 	}
-
-
 }
 
 bool GettingData::MainPage::validateIpAddress(const std::string &ipAddress)

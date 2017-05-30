@@ -36,3 +36,4 @@ output/
 backup/
 BundleArtifacts/
 app/
+.vs/
